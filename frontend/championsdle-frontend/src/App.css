@@ -1,0 +1,59 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+input[type="text"] {
+  padding: 10px;
+  margin: 20px;
+  border: 2px solid #61dafb;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  background-color: #61dafb;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.player-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.player-icon {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.player-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.player-attribute {
+  background-color: green;
+  color: white;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+}
