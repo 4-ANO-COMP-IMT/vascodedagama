@@ -3,7 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const { initializeApp } = require('firebase/app');
 const { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } = require('firebase/auth');
-const axios = require('axios');  // Importando o Axios para enviar eventos para o Buser de Eventos
+const axios = require('axios');  // Importando o Axios para enviar eventos para o Event Bus
 
 const firebaseConfig = {
   apiKey: "AIzaSyDtsNBgEVJ1NJ5GqX3PCvOYSzb-CTRLDaI",
@@ -27,6 +27,14 @@ app.post('/login', (req, res) => {
 
   signInWithEmailAndPassword(auth, email, password)
     .then(userCredential => {
+      // Manda o Evento pro Event Bus
+      axios.post('http://localhost:3003/events', {
+        type: 'Usuario Logado',
+        data: { id: userCredential.user.uid, email: userCredential.user.email }
+      }).catch((err) => {
+        console.log('Erro enviando evento pro Event Bus', err.message);
+      });
+
       res.status(200).send(userCredential.user);
     })
     .catch(error => {
@@ -39,12 +47,12 @@ app.post('/signup', (req, res) => {
 
   createUserWithEmailAndPassword(auth, email, password)
     .then(userCredential => {
-      // Send event to Event Bus
+      // Manda o Evento pro Event Bus
       axios.post('http://localhost:3003/events', {
         type: 'Usuario Criado',
         data: { id: userCredential.user.uid, email: userCredential.user.email }
       }).catch((err) => {
-        console.log('Erro enviando evento pro Buser de Eventos', err.message);
+        console.log('Erro enviando evento pro Event Bus', err.message);
       });
 
       res.status(201).send(userCredential.user);
@@ -57,6 +65,14 @@ app.post('/signup', (req, res) => {
 app.post('/logout', (req, res) => {
   signOut(auth)
     .then(() => {
+      // Manda o Evento pro Event Bus
+      axios.post('http://localhost:3003/events', {
+        type: 'Usuario Deslogado',
+        data: { message: 'Usuário deslogado com sucesso' }
+      }).catch((err) => {
+        console.log('Erro enviando evento pro Event Bus', err.message);
+      });
+
       res.status(200).send({ message: 'Usuário deslogado com sucesso' });
     })
     .catch(error => {
