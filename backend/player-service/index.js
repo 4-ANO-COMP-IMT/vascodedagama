@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const axios = require('axios');  // Importando o Axios para enviar eventos para o Buser de Eventos
+const axios = require('axios');  // Importando o Axios para enviar eventos para o Event Bus
 
 const app = express();
 app.use(cors());
@@ -19,7 +19,7 @@ let players = [
     league: 'Premier League',
     icon: 'player1.png'
   },
-  // Adiciona mais jogadores caso necessario (futuramente usar banco de dados)
+  // Adicione mais jogadores caso necessário (futuramente usar banco de dados)
 ];
 
 // Get em todos os jogadores
@@ -33,17 +33,26 @@ app.get('/players/:id', (req, res) => {
   if (player) {
     res.status(200).send(player);
   } else {
-    res.status(404).send({ error: 'Jogador Faltando' });
+    res.status(404).send({ error: 'Jogador não encontrado' });
   }
 });
 
-// Adiciona um novo jogador
+// Adiciona um novo jogador manualmente 
 app.post('/players', (req, res) => {
   const newPlayer = {
     id: players.length + 1, // Incrementando o id
     ...req.body
   };
   players.push(newPlayer);
+
+  // Manda o Evento pro Event Bus
+  axios.post('http://localhost:3003/events', {
+    type: 'Novo Jogador Criado',
+    data: newPlayer
+  }).catch((err) => {
+    console.log('Erro enviando evento para o Event Bus', err.message);
+  });
+
   res.status(201).send(newPlayer);
 });
 

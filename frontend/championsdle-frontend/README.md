@@ -1,16 +1,26 @@
-# Grupo formado por:
-Nome: Carlos Augusto Freire Maia de Oliveira 	RA: 21.00781-0  
-Nome: Cesar Fukushima Kim Bresciani 			RA: 21.00478-0  
-Nome: Enzo Leonardo Sabatelli de Moura 		    RA: 21.01535-0  
-Nome: Estevan Delazari Feher 				    RA: 21.00586-9  
-Nome: Gabriel Zendron Allievi 				    RA: 21.01350-0  
-Nome: Joao Paulo de Souza Rodrigues 			RA: 21.01809-9
+## Autores
+- **Nome:** Carlos Augusto Freire Maia de Oliveira 	    RA: 21.00781-0
+- **Nome:** Cesar Fukushima Kim Bresciani 			    RA: 21.00478-0
+- **Nome:** Enzo Leonardo Sabatelli de Moura 		    RA: 21.01535-0
+- **Nome:** Estevan Delazari Feher 				        RA: 21.00586-9
+- **Nome:** Gabriel Zendron Allievi 				    RA: 21.01350-0
+- **Nome:** Joao Paulo de Souza Rodrigues 			    RA: 21.01809-9
 
 # Championsdle
 
-(Descrição. Uma explicação detalhada sobre o que a aplicação visa oferecer ao
-usuário final. Qual benefício tenho de utilizar a aplicação? Quais funcionalidades ela
-oferece para o usuário final? Venda bem o seu peixe!)
+Championsdle é uma aplicação web interativa e divertida onde os usuários podem adivinhar características de jogadores de futebol. Inspirado no famoso jogo de palavras "Wordle", Championsdle traz uma abordagem esportiva e educativa, permitindo que os fãs de futebol testem seus conhecimentos sobre jogadores de diferentes ligas e equipes.
+
+### Benefícios
+
+- **Entretenimento Educativo**: Aprenda mais sobre seus jogadores favoritos enquanto se diverte.
+- **Interação Social**: Compartilhe suas pontuações com amigos e veja quem sabe mais sobre futebol.
+- **Atualizações Regulares**: Novos jogadores e desafios adicionados constantemente.
+
+### Funcionalidades
+
+- **Busca de Jogadores**: Insira o nome de um jogador e veja as características associadas a ele.
+- **Feedback Visual**: Cores indicam a precisão de suas suposições (correto, parcial, incorreto).
+- **Multiplataforma**: Acesse de qualquer dispositivo com um navegador web.
 
 # Getting Started with Create React App
 
