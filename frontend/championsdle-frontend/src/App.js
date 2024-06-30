@@ -12,7 +12,7 @@ const App = () => {
       const response = await axios.get(`http://localhost:3002/players`);
       console.log('Player Data:', response.data); // Log player data
 
-      // Find player matching the entered name
+      // Acha o Jogador com o nome inserido
       const playerData = response.data.find(p => p.name.toLowerCase() === playerName.toLowerCase());
       
       if (playerData) {
