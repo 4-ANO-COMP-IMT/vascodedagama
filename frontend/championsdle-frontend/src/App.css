@@ -1,8 +1,6 @@
+/* Estilo geral da aplicação */
 .App {
   text-align: center;
-}
-
-.App-header {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -11,76 +9,147 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  position: relative;
 }
 
-input[type="text"] [type="password"] {
-  padding: 10px;
-  margin: 20px;
-  border: 2px solid #61dafb;
-  border-radius: 5px;
+/* Estilo do Modal (Tela de próximo jogo)*/
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
 }
 
-input.style-login{
-  width: 300px;
-  height:25px;
-  padding: 10px;
-  margin: 10px;
-  border: 2px solid #61dafb;
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  color: black;
+}
+
+.modal-content h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.modal-content p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.modal-content button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #61dafb;
+  color: #282c34;
+  border: none;
   border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-content button:hover {
+  background-color: #21a1f1;
+}
+
+
+/* Estilo do botão de logout */
+.logout-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #61dafb;
+  color: #282c34;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #21a1f1;
+}
+
+/* Estilo do cabeçalho */
+h1 {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Estilo do formulário de busca */
+form {
+  margin-bottom: 20px;
+}
+
+input[type="text"] {
+  padding: 10px;
+  font-size: 1.5rem;
+  border-radius: 5px;
+  border: none;
+  margin-right: 10px;
 }
 
 button {
   padding: 10px 20px;
-  margin: 10px;
-  border: none;
+  font-size: 1.5rem;
   background-color: #61dafb;
-  color: white;
-  cursor: pointer;
+  color: #282c34;
+  border: none;
   border-radius: 5px;
+  cursor: pointer;
 }
 
-button.style-login{
-  width:125px;
-  height:35px;
-  padding: 10px 20px;
-  margin: 10px;
-  border: none;
-  background-color: #61dafb;
-  color: white;
-  cursor: pointer;
-  border-radius: 5px;
+button:hover {
+  background-color: #21a1f1;
 }
 
+/* Estilo das informações do jogador */
 .player-info {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   margin-top: 20px;
-}
-
-.player-icon {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  margin-bottom: 20px;
 }
 
 .player-details {
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
+  gap: 15px;
+  padding: 20px;
+  background-color: #20232a;
+  border-radius: 10px;
 }
 
 .player-attribute {
-  background-color: green;
-  color: white;
   padding: 10px;
-  margin: 5px;
+  font-size: 1.2rem;
   border-radius: 5px;
+  min-width: 150px;
+  text-align: center;
+  color: white; 
 }
 
-.input-container{
-  display:flex;
-  flex-direction: column;
-  gap:10px;
+.player-attribute.green {
+  background-color: green;
+}
+
+.player-attribute.red {
+  background-color: red;
+}
+
+.player-icon {
+  width: 100px;
+  height: auto;
+  margin-bottom: 20px;
 }
