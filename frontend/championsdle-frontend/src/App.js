@@ -5,79 +5,109 @@ import './App.css';
 const App = () => {
   const [playerName, setPlayerName] = useState('');
   const [player, setPlayer] = useState(null);
+  const [secretPlayer, setSecretPlayer] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isCadastro, setCadastro] = useState(false);
+  const [color, setColor] = useState({});
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const loggedIn = localStorage.getItem('isLoggedIn');
-    setIsLoggedIn(loggedIn === 'true');
+    if (loggedIn === 'true') {
+      setIsLoggedIn(true);
+      setSecretPlayer(JSON.parse(localStorage.getItem('secretPlayer')));
+    }
   }, []);
 
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get(`http://localhost:3002/players`);
-      console.log('Player Data:', response.data); // Log player data
-
-      // Acha o Jogador com o nome inserido
+      const response = await axios.get('http://localhost:3002/players');
       const playerData = response.data.find(p => p.name.toLowerCase() === playerName.toLowerCase());
-      
+
       if (playerData) {
         setPlayer(playerData);
+        checkAttributes(playerData);
+
+        if (playerData.name.toLowerCase() === secretPlayer.name.toLowerCase()) {
+          setShowModal(true);  
+        }
       } else {
         setPlayer(null);
-        alert('Player not found');
+        alert('Jogador não encontrado.');
       }
     } catch (error) {
-      console.error('Error fetching player data', error);
+      console.error('Erro ao buscar jogador:', error);
+    }
+  };
+
+  const handleNewPlayer = async () => {
+    try {
+      const newSecretPlayer = await axios.get('http://localhost:3002/secret-player');
+      setSecretPlayer(newSecretPlayer.data);
+      localStorage.setItem('secretPlayer', JSON.stringify(newSecretPlayer.data));
+      setPlayer(null);
+      setColor({});
+      setShowModal(false);  
+    } catch (error) {
+      console.error('Erro ao sortear novo jogador:', error);
     }
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    try{
+    try {
       const response = await axios.post('http://localhost:3001/login', {
         email: username,
         password: password
       });
 
-      console.log('Response data: ',response.data);
-      if(response.status === 200){
-        setIsLoggedIn(true);
-        localStorage.setItem('isLoggedIn','true');
-      }
-      else
-        alert("Usuário inválido!");
-    }catch(error){
-      console.error('Error logging in:', error.response ? error.response.data : error.message);
+      setIsLoggedIn(true);
+      localStorage.setItem('isLoggedIn', 'true');
+      setSecretPlayer(response.data.secretPlayer);
+      localStorage.setItem('secretPlayer', JSON.stringify(response.data.secretPlayer));
+    } catch (error) {
+      console.error('Erro ao fazer login:', error);
+      alert('Usuário ou senha inválidos.');
     }
   };
 
   const handleLogout = () => {
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('secretPlayer');
     setIsLoggedIn(false);
-  }
+    setSecretPlayer(null);
+    setPlayer(null);
+    setColor({});
+  };
 
-  const handleCadastro = async(e) => {
-    console.log("valores: "+username+" e "+password);
+  const handleCadastro = async (e) => {
     e.preventDefault();
-    try{
-      const response = await axios.post('http://localhost:3001/signup', {
+    try {
+      await axios.post('http://localhost:3001/signup', {
         email: username,
         password: password
       });
-
-      console.log("Response sign-up: "+response.data);
-      if(response.status === 201){
-        setCadastro(false);
-      }
-      else 
-        alert("Falha no cadastro!");
-    }catch(error){
-      console.error('Error logging in:', error.response ? error.response.data : error.message);
+      alert('Cadastro realizado com sucesso! Faça login.');
+      setCadastro(false);
+    } catch (error) {
+      console.error('Erro ao cadastrar:', error);
+      alert('Erro ao realizar cadastro.');
     }
+  };
+
+  const checkAttributes = (playerData) => {
+    const newColor = {};
+    newColor.name = playerData.name === secretPlayer.name ? 'green' : 'red';
+    newColor.height = playerData.height === secretPlayer.height ? 'green' : 'red';
+    newColor.team = playerData.team === secretPlayer.team ? 'green' : 'red';
+    newColor.price = playerData.price === secretPlayer.price ? 'green' : 'red';
+    newColor.foot = playerData.foot === secretPlayer.foot ? 'green' : 'red';
+    newColor.position = playerData.position === secretPlayer.position ? 'green' : 'red';
+    newColor.league = playerData.league === secretPlayer.league ? 'green' : 'red';
+    setColor(newColor);
   };
 
   if (isCadastro) {
@@ -117,22 +147,22 @@ const App = () => {
         </header>
       </div>
     );
-  }
-  else if(!isLoggedIn && !isCadastro){
-    console.log("valor do cadastro: "+isCadastro);
+  } else if (!isLoggedIn) {
     return (
       <div className="App">
         <header className="App-header">
           <h1>LOGIN</h1>
           <form onSubmit={handleLogin}>
-            <div class="input-container">
-              <input class="style-login"
+            <div className="input-container">
+              <input
+                className="style-login"
                 type="text"
                 placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
-              <input class="style-login"
+              <input
+                className="style-login"
                 type="password"
                 placeholder="Password"
                 value={password}
@@ -140,45 +170,70 @@ const App = () => {
               />
             </div>
             <div>
-              <button class="style-login" onClick={(e) => {e.preventDefault();
-                                                           setCadastro(true)}}>Cadastrar</button>
-              <button class="style-login" type="submit">Login</button>
+              <button className="style-login" onClick={() => setCadastro(true)}>
+                Cadastrar
+              </button>
+              <button className="style-login" type="submit">
+                Login
+              </button>
             </div>
           </form>
         </header>
       </div>
     );
-  }
-  else{
+  } else {
     return (
       <div className="App">
-        <header className="App-header">
-          <h1>Championsdle</h1>
-          <button onClick={handleLogout}>Logout</button>
-          <form onSubmit={handleSearch}>
-            <input
-              type="text"
-              placeholder="Inserir nome de Jogador"
-              value={playerName}
-              onChange={(e) => setPlayerName(e.target.value)}
-            />
-            <button type="submit">Palpitar</button>
-          </form>
-          {player && (
-            <div className="player-info">
-              <img src={player.icon} alt={player.name} className="player-icon" />
-              <div className="player-details">
-                <div className="player-attribute">Nome: {player.name}</div>
-                <div className="player-attribute">Altura: {player.height}</div>
-                <div className="player-attribute">Time: {player.team}</div>
-                <div className="player-attribute">Preço: {player.price}</div>
-                <div className="player-attribute">Pé: {player.foot}</div>
-                <div className="player-attribute">Posição: {player.position}</div>
-                <div className="player-attribute">Liga: {player.league}</div>
+        <button className="logout-button" onClick={handleLogout}>
+          Logout
+        </button>
+        <h1>Championsdle</h1>
+        <form onSubmit={handleSearch}>
+          <input
+            type="text"
+            placeholder="Inserir nome de Jogador"
+            value={playerName}
+            onChange={(e) => setPlayerName(e.target.value)}
+          />
+          <button type="submit">Palpitar</button>
+        </form>
+        {player && (
+          <div className="player-info">
+            <img src={player.icon} alt={player.name} className="player-icon" />
+            <div className="player-details">
+              <div className={`player-attribute ${color.name}`}>
+                Nome: {player.name}
+              </div>
+              <div className={`player-attribute ${color.height}`}>
+                Altura: {player.height}
+              </div>
+              <div className={`player-attribute ${color.team}`}>
+                Time: {player.team}
+              </div>
+              <div className={`player-attribute ${color.price}`}>
+                Preço: {player.price}
+              </div>
+              <div className={`player-attribute ${color.foot}`}>
+                Pé: {player.foot}
+              </div>
+              <div className={`player-attribute ${color.position}`}>
+                Posição: {player.position}
+              </div>
+              <div className={`player-attribute ${color.league}`}>
+                Liga: {player.league}
               </div>
             </div>
-          )}
-        </header>
+          </div>
+        )}
+        {showModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <h2>Parabéns!</h2>
+              <p>Você acertou o jogador secreto!</p>
+              <button onClick={handleNewPlayer}>Novo Jogador</button>
+            </div>
+          </div>
+        )}
       </div>
     );
   }

@@ -22,44 +22,64 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
-  signInWithEmailAndPassword(auth, email, password)
-    .then(userCredential => {
-      // Manda o Evento pro Event Bus
-      axios.post('http://localhost:3003/events', {
-        type: 'Usuario Logado',
-        data: { id: userCredential.user.uid, email: userCredential.user.email }
-      }).catch((err) => {
-        console.log('Erro enviando evento pro Event Bus', err.message);
-      });
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    
+    // Sorteia o jogador secreto
+    const { data: secretPlayer } = await axios.get('http://localhost:3002/secret-player');
 
-      res.status(200).send(userCredential.user);
-    })
-    .catch(error => {
-      res.status(400).send({ error: error.message });
+    // Manda o Evento pro Event Bus
+    axios.post('http://localhost:3003/events', {
+      type: 'Usuario Logado',
+      data: {
+        id: userCredential.user.uid,
+        email: userCredential.user.email,
+        secretPlayer: secretPlayer // Inclui o jogador secreto no evento
+      }
+    }).catch((err) => {
+      console.log('Erro enviando evento pro Event Bus', err.message);
     });
+
+    res.status(200).send({
+      user: userCredential.user,
+      secretPlayer: secretPlayer // Envia o jogador secreto diretamente para o frontend
+    });
+  } catch (error) {
+    res.status(400).send({ error: error.message });
+  }
 });
 
-app.post('/signup', (req, res) => {
+app.post('/signup', async (req, res) => {
   const { email, password } = req.body;
 
-  createUserWithEmailAndPassword(auth, email, password)
-    .then(userCredential => {
-      // Manda o Evento pro Event Bus
-      axios.post('http://localhost:3003/events', {
-        type: 'Usuario Criado',
-        data: { id: userCredential.user.uid, email: userCredential.user.email }
-      }).catch((err) => {
-        console.log('Erro enviando evento pro Event Bus', err.message);
-      });
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    
+    // Sorteia o jogador secreto
+    const { data: secretPlayer } = await axios.get('http://localhost:3002/secret-player');
 
-      res.status(201).send(userCredential.user);
-    })
-    .catch(error => {
-      res.status(400).send({ error: error.message });
+    // Manda o Evento pro Event Bus
+    axios.post('http://localhost:3003/events', {
+      type: 'Usuario Criado',
+      data: {
+        id: userCredential.user.uid,
+        email: userCredential.user.email,
+        secretPlayer: secretPlayer // Inclui o jogador secreto no evento
+      }
+    }).catch((err) => {
+      console.log('Erro enviando evento pro Event Bus', err.message);
     });
+
+    res.status(201).send({
+      user: userCredential.user,
+      secretPlayer: secretPlayer // Envia o jogador secreto diretamente para o frontend
+    });
+  } catch (error) {
+    res.status(400).send({ error: error.message });
+  }
 });
 
 app.post('/logout', (req, res) => {
