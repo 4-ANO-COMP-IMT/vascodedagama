@@ -71,6 +71,7 @@ const App = () => {
       localStorage.setItem('isLoggedIn', 'true');
       setSecretPlayer(response.data.secretPlayer);
       localStorage.setItem('secretPlayer', JSON.stringify(response.data.secretPlayer));
+      setIsPalpitarDisabled(false);
     } catch (error) {
       console.error('Erro ao fazer login:', error);
       alert('Usuário ou senha inválidos.');
