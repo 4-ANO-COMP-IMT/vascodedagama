@@ -12,6 +12,7 @@ const App = () => {
   const [isCadastro, setCadastro] = useState(false);
   const [color, setColor] = useState({});
   const [showModal, setShowModal] = useState(false);
+  const [isPalpitarDisabled, setIsPalpitarDisabled] = useState(false);
 
   useEffect(() => {
     const loggedIn = localStorage.getItem('isLoggedIn');
@@ -32,7 +33,8 @@ const App = () => {
         checkAttributes(playerData);
 
         if (playerData.name.toLowerCase() === secretPlayer.name.toLowerCase()) {
-          setShowModal(true);  
+          setShowModal(true);
+          setIsPalpitarDisabled(true);
         }
       } else {
         setPlayer(null);
@@ -50,7 +52,8 @@ const App = () => {
       localStorage.setItem('secretPlayer', JSON.stringify(newSecretPlayer.data));
       setPlayer(null);
       setColor({});
-      setShowModal(false);  
+      setShowModal(false);
+      setIsPalpitarDisabled(false);
     } catch (error) {
       console.error('Erro ao sortear novo jogador:', error);
     }
@@ -118,28 +121,27 @@ const App = () => {
           <form onSubmit={handleCadastro}>
             <div className="input-container">
               <input
-                className="style-login"
+                className="form-input"
                 type="text"
                 placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
               <input
-                className="style-login"
+                className="form-input"
                 type="password"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <div>
-              <button
-                className="style-login"
-                onClick={() => setCadastro(false)}
-              >
-                Voltar ao Login
+            <div className="button-container">
+              <button className="form-button" 
+                onClick={(e) => { e.preventDefault(); setCadastro(false);
+                }}>
+                Voltar
               </button>
-              <button className="style-login" type="submit">
+              <button className="form-button" type="submit">
                 Cadastrar
               </button>
             </div>
@@ -147,33 +149,34 @@ const App = () => {
         </header>
       </div>
     );
-  } else if (!isLoggedIn) {
+  } if (!isLoggedIn) {
     return (
       <div className="App">
         <header className="App-header">
-          <h1>LOGIN</h1>
+          <h1>Login</h1>
           <form onSubmit={handleLogin}>
             <div className="input-container">
               <input
-                className="style-login"
+                className="form-input"
                 type="text"
                 placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
               <input
-                className="style-login"
+                className="form-input"
                 type="password"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <div>
-              <button className="style-login" onClick={() => setCadastro(true)}>
-                Cadastrar
+            <div className="button-container">
+              <button className="form-button" 
+                onClick={(e) => { e.preventDefault(); setCadastro(true);}}>
+                Cadastro
               </button>
-              <button className="style-login" type="submit">
+              <button className="form-button" type="submit">
                 Login
               </button>
             </div>
@@ -187,6 +190,9 @@ const App = () => {
         <button className="logout-button" onClick={handleLogout}>
           Logout
         </button>
+        <button onClick={handleNewPlayer} className="new-player-button">
+          Novo Jogador
+        </button>
         <h1>Championsdle</h1>
         <form onSubmit={handleSearch}>
           <input
@@ -195,7 +201,7 @@ const App = () => {
             value={playerName}
             onChange={(e) => setPlayerName(e.target.value)}
           />
-          <button type="submit">Palpitar</button>
+          <button type="submit" disabled={isPalpitarDisabled}>Palpitar</button>
         </form>
         {player && (
           <div className="player-info">
@@ -230,7 +236,10 @@ const App = () => {
             <div className="modal-content">
               <h2>Parabéns!</h2>
               <p>Você acertou o jogador secreto!</p>
-              <button onClick={handleNewPlayer}>Novo Jogador</button>
+              <div className="button-container">
+                <button onClick={() => setShowModal(false)}>Fechar</button>
+                <button onClick={handleNewPlayer}>Novo Jogador</button>
+              </div>
             </div>
           </div>
         )}
