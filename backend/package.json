@@ -1,0 +1,5 @@
+{
+    "scripts": {
+        "start-all": "concurrently \"node auth-service/index.js\" \"node event-bus/index.js\" \"node player-service/index.js\""
+        }
+}
