@@ -277,13 +277,14 @@ const App = () => {
           Novo Jogador
         </button>
         {/* Exibindo informações de tentativas */}
+        {guessHistory.length > 0 && (
         <p className="attempts-info">
           {attempts >= 6 ? 'O jogador secreto não foi adivinhado.' :
             player && player.name.toLowerCase() === secretPlayer.name.toLowerCase() ? 
             `Você acertou o jogador secreto: ${secretPlayer.name}!` : 
             `Você possui ${6 - attempts} tentativas restantes.`
           }
-        </p>
+        </p>)}
         <h1>Championsdle</h1>
         <form onSubmit={handleSearch}>
           <input
