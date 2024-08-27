@@ -52,6 +52,61 @@ let players = [
     league: 'La Liga',
     icon: 'player4.png'
   },
+  {
+    id: 5,
+    name: 'Jogador 5',
+    height: '142cm',
+    team: 'Time B',
+    price: '14M',
+    foot: 'Direito',
+    position: 'Zagueiro',
+    league: 'La Liga',
+    icon: 'player5.png'
+  },
+  {
+    id: 6,
+    name: 'Jogador 6',
+    height: '201cm',
+    team: 'Time B',
+    price: '14M',
+    foot: 'Direito',
+    position: 'Goleiro',
+    league: 'La Liga',
+    icon: 'player6.png'
+  },
+  {
+    id: 7,
+    name: 'Jogador 7',
+    height: '187cm',
+    team: 'Time D',
+    price: '20M',
+    foot: 'Direito',
+    position: 'Goleiro',
+    league: 'La Liga',
+    icon: 'player7.png'
+  },
+  {
+    id: 8,
+    name: 'Jogador 8',
+    height: '168cm',
+    team: 'Time C',
+    price: '26M',
+    foot: 'Direito',
+    position: 'Lateral',
+    league: 'Ligue 1',
+    icon: 'player8.png'
+  },
+  {
+    id: 9,
+    name: 'Jogador 9',
+    height: '185cm',
+    team: 'Time D',
+    price: '30M',
+    foot: 'Direito',
+    position: 'Atacante',
+    league: 'Ligue 1',
+    icon: 'player9.png'
+  },
   // Adicione mais jogadores caso necessário (futuramente usar banco de dados)
 ];
 
