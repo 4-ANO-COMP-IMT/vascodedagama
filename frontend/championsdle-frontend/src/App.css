@@ -24,6 +24,38 @@
   font-weight: bold; /* Define o peso da fonte */
 }
 
+/* Estilo para a pontuação */
+.score-container {
+  position: absolute;
+  top: 160px; /* Ajuste a posição vertical conforme necessário */
+  left: 100px; /* Ajuste a posição horizontal conforme necessário */
+  display: flex;
+  flex-direction: column; /* Organize os itens verticalmente */
+  gap: 5px; /* Adiciona espaço entre os itens */
+  color: white; /* Define a cor do texto */
+}
+
+.score-container p {
+  font-size: 1.2rem; /* Define o tamanho da fonte */
+  font-weight: bold; /* Define o peso da fonte */
+}
+
+/* Estilo para o recorde */
+.high-score-container {
+  position: absolute;
+  top: 160px; /* Ajuste a posição vertical conforme necessário */
+  right: 120px; /* Ajuste a posição horizontal conforme necessário */
+  display: flex;
+  flex-direction: column; /* Organize os itens verticalmente */
+  gap: 5px; /* Adiciona espaço entre os itens */
+  color: white; /* Define a cor do texto */
+}
+
+.high-score-container p {
+  font-size: 1.2rem; /* Define o tamanho da fonte */
+  font-weight: bold; /* Define o peso da fonte */
+}
+
 /* Estilo do Modal (Tela de próximo jogo) */
 .modal {
   position: fixed;

@@ -36,12 +36,18 @@ const App = () => {
   const [guessHistory, setGuessHistory] = useState([]);
   const [guessedPlayers, setGuessedPlayers] = useState(new Set()); 
   const [attempts, setAttempts] = useState(0);
+  const [score, setScore] = useState(0); 
+  const [highScore, setHighScore] = useState(0); 
 
   useEffect(() => {
     const loggedIn = localStorage.getItem('isLoggedIn');
     if (loggedIn === 'true') {
       setIsLoggedIn(true);
       setSecretPlayer(JSON.parse(localStorage.getItem('secretPlayer')));
+      const savedHighScore = localStorage.getItem('highScore');
+      if (savedHighScore) {
+        setHighScore(parseInt(savedHighScore, 10));
+      }
     }
   }, []);
 
@@ -104,9 +110,15 @@ const App = () => {
         if (playerData.name.toLowerCase() === secretPlayer.name.toLowerCase()) {
           setShowModal(true);
           setIsPalpitarDisabled(true);
+          setScore(score + 1);
+          if (score + 1 > highScore) {
+            setHighScore(score + 1);
+            localStorage.setItem('highScore', score + 1); 
+          }
         } else if (attempts === 5) { // Verifica se é a última chance
-          setShowModal(true); // Exibe o modal imediatamente após a última tentativa
-          setIsPalpitarDisabled(true); 
+          setShowModal(true);
+          setIsPalpitarDisabled(true);
+          setScore(0); 
         }
       } else {
         setPlayer(null);
@@ -285,6 +297,13 @@ const App = () => {
             `Você possui ${6 - attempts} tentativas restantes.`
           }
         </p>)}
+        {/* Exibindo a pontuação atual e recorde */}
+        <div className="score-container">
+          <p>Pontuação: {score}</p>
+        </div>
+        <div className="high-score-container">
+          <p>Recorde: {highScore}</p> 
+        </div>
         <h1>Championsdle</h1>
         <form onSubmit={handleSearch}>
           <input
