@@ -48,10 +48,18 @@ cd event-bus
 npm install
 node index.js
 ```
+**Ou Inicie os serviços do back-end em conjunto:**
+
+```sh
+cd backend
+npm install -g concurrently
+npm run start-all
+```
 
 ### Inicie o servidor front-end:
 ```sh
 cd frontend
+cd championsdle-frontend
 npm install
 npm start
 ```
