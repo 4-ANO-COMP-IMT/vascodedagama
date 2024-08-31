@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
-const renderAttribute = (label, value, color, icon) => {
+const renderAttribute = (label, age, color, icon) => {
   const showIndicator = color.includes('red');
   const isHigher = color.includes('higher');
   const isLower = color.includes('lower');
@@ -12,7 +12,7 @@ const renderAttribute = (label, value, color, icon) => {
       {label === 'Nome' && icon && (
         <img src={icon} alt="Player Icon" className="player-icon" />
       )}
-      {label !== 'Nome' && `${value}`}
+      {label !== 'Nome' && `${age}`}
       {showIndicator && (
         <span className="indicator">
           {isHigher ? '⬇️' : isLower ? '⬆️' : null}
@@ -37,7 +37,9 @@ const App = () => {
   const [guessedPlayers, setGuessedPlayers] = useState(new Set()); 
   const [attempts, setAttempts] = useState(0);
   const [score, setScore] = useState(0); 
-  const [highScore, setHighScore] = useState(0); 
+  const [highScore, setHighScore] = useState(0);
+  const [showRankingModal, setShowRankingModal] = useState(false);
+  const [showHelpModal, setShowHelpModal] = useState(false);
 
   useEffect(() => {
     const loggedIn = localStorage.getItem('isLoggedIn');
@@ -59,6 +61,22 @@ const App = () => {
       console.error('Erro ao buscar jogadores:', error);
       return [];
     }
+  };
+
+  const handleShowRanking = () => {
+    setShowRankingModal(true);
+  };
+
+  const handleCloseRankingModal = () => {
+    setShowRankingModal(false);
+  };
+
+  const handleShowHelp = () => {
+    setShowHelpModal(true);
+  };
+
+  const handleCloseHelpModal = () => {
+    setShowHelpModal(false);
   };
 
   const handleInputChange = async (e) => {
@@ -197,12 +215,12 @@ const App = () => {
       newColor.height = playerData.height > secretPlayer.height ? 'red higher' : 'red lower';
     }
     newColor.team = playerData.team === secretPlayer.team ? 'green' : 'red';
-    if (playerData.price === secretPlayer.price) {
-      newColor.price = 'green';
+    if (playerData.age === secretPlayer.age) {
+      newColor.age = 'green';
     } else {
-      newColor.price = playerData.price > secretPlayer.price ? 'red higher' : 'red lower';
+      newColor.age = playerData.age > secretPlayer.age ? 'red higher' : 'red lower';
     }
-    newColor.foot = playerData.foot === secretPlayer.foot ? 'green' : 'red';
+    newColor.country = playerData.country === secretPlayer.country ? 'green' : 'red';
     newColor.position = playerData.position === secretPlayer.position ? 'green' : 'red';
     newColor.league = playerData.league === secretPlayer.league ? 'green' : 'red';
     return newColor; // Retorna o objeto de cores
@@ -285,8 +303,11 @@ const App = () => {
         <button className="logout-button" onClick={handleLogout}>
           Logout
         </button>
-        <button onClick={handleNewPlayer} className="new-player-button">
-          Novo Jogador
+        <button onClick={handleShowRanking} className="ranking-button">
+          Ranking
+        </button>
+        <button onClick={handleShowHelp} className="help-button">
+          Ajuda
         </button>
         {/* Exibindo informações de tentativas */}
         {guessHistory.length > 0 && (
@@ -324,6 +345,7 @@ const App = () => {
               >
                 <img src={suggestion.icon} alt={suggestion.name} className="suggestion-icon" />
                 <span>{suggestion.name}</span>
+                <img src={suggestion.club_logo} alt={suggestion.club_logo} className="suggestion-club" />
               </li>
             ))}
           </ul>
@@ -334,8 +356,8 @@ const App = () => {
           <div>Jogador</div>
           <div>Altura</div>
           <div>Time</div>
-          <div>Preço</div>
-          <div>Pé</div>
+          <div>Idade</div>
+          <div>Nacionalidade</div>
           <div>Posição</div>
           <div>Liga</div>
         </div>)}
@@ -355,10 +377,10 @@ const App = () => {
                   {renderAttribute('Time', guess.player.team, guess.color.team)}
                 </div>
                 <div className="player-attribute">
-                  {renderAttribute('Preço', guess.player.price, guess.color.price)}
+                  {renderAttribute('Idade', guess.player.age, guess.color.age)}
                 </div>
                 <div className="player-attribute">
-                  {renderAttribute('Pé', guess.player.foot, guess.color.foot)}
+                  {renderAttribute('Nacionalidade', guess.player.country, guess.color.country)}
                 </div>
                 <div className="player-attribute">
                   {renderAttribute('Posição', guess.player.position, guess.color.position)}
@@ -370,6 +392,45 @@ const App = () => {
             </div>
           ))}
         </div>
+        {showHelpModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <h2>Como Jogar</h2>
+              <p>
+                O Championsdle é um jogo que desafia você a adivinhar um jogador secreto de futebol.
+                Você tem seis tentativas para descobrir quem é o jogador, usando as dicas fornecidas.
+                Após cada palpite, você receberá dicas sobre os atributos do jogador.
+              </p>
+              <p>
+                <b>Dicas:</b>
+              </p>
+              <ul>
+                <li>
+                  <b>Verde:</b>  Significa que o atributo está correto.
+                </li>
+                <li>
+                  <b>Vermelho:</b>  Significa que o atributo está incorreto.
+                </li>
+                <li>
+                  <b>Vermelho com seta para baixo (⬇️):</b>  Significa que o atributo é maior do que o do jogador secreto.
+                </li>
+                <li>
+                  <b>Vermelho com seta para cima (⬆️):</b> Significa que o atributo é menor do que o do jogador secreto.
+                </li>
+              </ul>
+              <button onClick={handleCloseHelpModal}>Fechar</button>
+            </div>
+          </div>
+        )}
+        {/* Protótipo de ranking, quando for adicionado banco de dados ele terá funcionalidade */}
+        {showRankingModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <h2>Carregando ranking...</h2>
+              <button onClick={handleCloseRankingModal}>Fechar</button>
+            </div>
+          </div>
+        )}
         {showModal && (
           <div className="modal">
             <div className="modal-content">
