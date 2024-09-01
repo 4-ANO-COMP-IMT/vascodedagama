@@ -12,6 +12,8 @@
   position: relative;
   padding: 20px; /* Adiciona padding para evitar o conteúdo sair da tela */
   box-sizing: border-box; /* Inclui padding e border na largura total */
+  background-image: url('./champions-stadium.png'); /* Adiciona a imagem de fundo */
+  background-size: cover; /* Faz a imagem cobrir a tela */
 }
 
 /* Estilo para informações de tentativas */
@@ -326,7 +328,7 @@ button:hover {
 .App-header {
   width: 400px;
   height: 300px;
-  background-color: #282c34;
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente sobre a imagem */
   border-radius: 10px;
   padding: 20px;
   display: flex;
