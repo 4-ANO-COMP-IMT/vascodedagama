@@ -16,11 +16,16 @@ Championsdle é uma aplicação web interativa e divertida onde os usuários pod
 - **Interação Social**: Compartilhe suas pontuações com amigos e veja quem sabe mais sobre futebol.
 - **Atualizações Regulares**: Novos jogadores e desafios adicionados constantemente.
 
-### Funcionalidades
+### Como Jogar
 
-- **Busca de Jogadores**: Insira o nome de um jogador e veja as características associadas a ele.
-- **Feedback Visual**: Cores indicam a precisão de suas suposições (correto, parcial, incorreto).
-- **Multiplataforma**: Acesse de qualquer dispositivo com um navegador web.
+O Championsdle é um jogo que desafia você a adivinhar um jogador secreto de futebol. Você tem seis tentativas para descobrir quem é o jogador, usando as dicas fornecidas. Após cada palpite, você receberá dicas sobre os atributos do jogador.
+
+Dicas:
+
+- Verde: Significa que o atributo está correto.
+- Vermelho: Significa que o atributo está incorreto.
+- Vermelho com seta para baixo (⬇️): Significa que o atributo é maior do que o do jogador secreto.
+- Vermelho com seta para cima (⬆️): Significa que o atributo é menor do que o do jogador secreto.
 
 # Getting Started with Create React App
 
