@@ -38,7 +38,6 @@ const App = () => {
   const [highScore, setHighScore] = useState(0);
   const [showRankingModal, setShowRankingModal] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
-  const [showOptions, setOptions] = useState(false);
 
   useEffect(() => {
     const loggedIn = localStorage.getItem('isLoggedIn');
@@ -206,16 +205,148 @@ const App = () => {
             <button onClick={handleLogout}>Logout</button>
           </div>
           <div class="buttons-div">
+            <span>Pontuação: {score}</span>
+            <span>Recorde: {highScore}</span>
+          </div>
+          <div class="buttons-div">
             <button onClick={handleShowRanking}>Ranking</button>
             <button onClick={handleShowHelp}>Ajuda</button>
           </div>
         </section>
         <header class="App-Header">
-          <h1>CHAMPIONSIDLE</h1>
+          <h1>CHAMPIONSDLE</h1>
         </header>
         <section class="App-Body">
-        
+          <form onSubmit={handleSearch} class="input-jogadores">
+            <div>
+              <input
+                type="text"
+                placeholder="Inserir nome de Jogador"
+                value={playerName}
+                onChange={handleInputChange}
+                className="player-input"
+              />
+              <button type="submit" disabled={isPalpitarDisabled} class="button-palpite">
+                Palpitar
+              </button>
+            </div>
+            <div>
+              {suggestions.length > 0 && (
+              <ul className="suggestions-list">
+                {suggestions.map((suggestion) => (
+                  <li
+                    key={suggestion.name}
+                    onClick={() => handleSuggestionClick(suggestion)}
+                  >
+                    <img src={suggestion.icon} alt={suggestion.name} className="suggestion-icon" />
+                    <span>{suggestion.name}</span>
+                    <img src={suggestion.club_logo} alt={suggestion.club_logo} className="suggestion-club" />
+                  </li>
+                ))}
+              </ul>
+              )}
+            </div>
+          </form>
+
+          {guessHistory.length > 0 && (
+          <div className="header-attributes">
+            <div class="attribute">Jogador</div>
+            <div class="attribute">Altura</div>
+            <div class="attribute">Time</div>
+            <div class="attribute">Idade</div>
+            <div class="attribute">Nacionalidade</div>
+            <div class="attribute">Posição</div>
+            <div class="attribute">Liga</div>
+          </div>)}
+          <div class="guess-history">
+          {guessHistory.map((guess, index) => (
+            <div key={index} className="player-info">
+              <div className="player-details">
+                {/* Renderizando os atributos do jogador, cada um em uma linha separada */}
+                <div className="player-attribute">
+                  {renderAttribute('Nome', guess.player.name, guess.color.name, guess.player.icon)}
+                </div>
+                <div className="player-attribute">
+                  {renderAttribute('Altura', guess.player.height, guess.color.height)}
+                </div>
+                <div className="player-attribute">
+                  {renderAttribute('Time', guess.player.team, guess.color.team)}
+                </div>
+                <div className="player-attribute">
+                  {renderAttribute('Idade', guess.player.age, guess.color.age)}
+                </div>
+                <div className="player-attribute">
+                  {renderAttribute('Nacionalidade', guess.player.country, guess.color.country)}
+                </div>
+                <div className="player-attribute">
+                  {renderAttribute('Posição', guess.player.position, guess.color.position)}
+                </div>
+                <div className="player-attribute">
+                  {renderAttribute('Liga', guess.player.league, guess.color.league)}
+                </div>
+              </div>
+            </div>
+          ))}
+          </div>
         </section>
+
+        {showHelpModal && (
+            <div class="help-modal">
+              <div class="modal-content">
+                <h2>Como Jogar</h2>
+                <p>
+                  O Championsdle é um jogo que desafia você a adivinhar um jogador secreto de futebol.
+                  Você tem seis tentativas para descobrir quem é o jogador, usando as dicas fornecidas.
+                  Após cada palpite, você receberá dicas sobre os atributos do jogador.
+                </p>
+                <p>
+                  <b>Dicas:</b>
+                </p>
+                <ul>
+                  <li>
+                    <b>Verde</b> Significa que o atributo está correto.
+                  </li>
+                  <li>
+                    <b>Vermelho</b> Significa que o atributo está errado
+                 </li>
+                 <li>
+                  <b>Vermelho com seta para baixo</b> Significa que o atributo é maior que o do jogador secreto
+                 </li>
+                 <li>
+                  <b>Vermelho com seta para cima</b> Significa que o atributo é menor que o do jogador secreto
+                 </li>
+                </ul>
+                <button onClick={handleCloseHelpModal}>Fechar</button>
+              </div>
+            </div>
+          )}
+          {showRankingModal && (
+          <div className="help-modal">
+            <div className="modal-content">
+              <h2>Carregando ranking...</h2>
+              <button onClick={handleCloseRankingModal}>Fechar</button>
+            </div>
+          </div>
+        )}
+          {showModal && (
+            <div class="help-modal">
+              <div class="modal-content">
+                {attempts >= 6 && (
+                  <h2> Você não adivinhou o jogador secreto =( </h2>
+                )}
+                {attempts < 6 && player && player.name.toLowerCase() === secretPlayer.name.toLowerCase() && (
+                  <h2> Parabéns! Você venceu =) </h2>
+                )}
+                <p>
+                  {attempts >= 6 ? 'O jogador secret não foi adivinhado.' :
+                    player && player.name.toLowerCase() === secretPlayer.name.toLowerCase() ?
+                    `Você acertou o jogador secreto: ${secretPlayer.name}!` : 
+                    null}
+                </p>
+                <button onClick={handleNewPlayer}>Sortear novo jogador</button>
+              </div>
+            </div>
+          )}
       </main>
     );
   }
