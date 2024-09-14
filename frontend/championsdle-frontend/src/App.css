@@ -1,181 +1,238 @@
-/* Estilo geral da aplicação */
-.App {
-  text-align: center;
-  background-color: #282c34;
+.App-Main{
+  width:100%;
   min-height: 100vh;
-  display: flex;
+  display:flex;
+  background-image: url('./shared/champions-stadium.png');
+  background-size:cover;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-  position: relative;
-  padding: 20px; /* Adiciona padding para evitar o conteúdo sair da tela */
-  box-sizing: border-box; /* Inclui padding e border na largura total */
-  background-image: url('./champions-stadium.png'); /* Adiciona a imagem de fundo */
-  background-size: cover; /* Faz a imagem cobrir a tela */
+  box-sizing: border-box;
+  /* overflow: hidden; */
+  
+  .App-Section{
+    height:8.5vh;
+    display:flex;
+    justify-content: space-between;
+    
+    .buttons-div{
+      width:20%;
+      display:flex;
+      justify-content: center;
+      align-items: center;
+      gap:0.75rem;
+
+      button{
+        width:35%;
+        font-size:1rem;
+        color: #282c34;
+        background-color: #61dafb;
+        border-radius:25px;
+        cursor:pointer;
+        margin-top:1rem;
+      }
+
+      span{
+        font-size:1.2rem;
+        font-weight: bold;
+        color:white;
+      }
+    }
+
+    button{
+      width:8%;
+      font-size:1rem;
+      color: #282c34;
+      background-color: #61dafb;
+      border-radius:25px;
+      cursor:pointer;
+    }
+  }
+
+  .App-Header{
+    max-height: 20vh;
+    padding: 0.15rem 1.5rem;
+    display:flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin:1rem 0;
+
+    h1{
+      color:white;
+      font-size: 4.5rem;
+      margin-bottom: 80px;
+      font-family: 'Arial', sans-serif;
+    }
+  }
+  
+  .App-Body{
+    display:flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+    .input-jogadores{
+      width:45%;
+      font-size:1.5rem;
+      border-radius:5px;
+      gap:0;
+
+      input[type="text"]{
+        width:75%;
+      }
+
+      .button-palpite{
+        background-color: #61dafb;
+        color: #282c34;
+        border:none;
+        border-radius:5px;
+        cursor:pointer;
+        font-size:1.5rem;
+      }
+    }
+
+    .suggestions-list {
+      list-style-type: none;
+      padding: 0;
+      margin-top: 10px;
+      width: 80%;
+      background-color: #333;
+      border-radius: 5px;
+      overflow-y: auto;
+      max-height: 200px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .suggestions-list li {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      cursor: pointer;
+      background-color:white;
+      border-bottom: 1px solid #444;
+    }
+
+    .suggestion-icon {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
+    .suggestion-club {
+      width: 30px;
+      height: 30px;
+      margin-left: 10px;
+    }
+
+    .header-attributes{
+      display:flex;
+      flex-direction: row;
+      padding:10px;
+      background-color: #20232a;
+      border-radius: 10px;
+      margin-top:2rem;
+      justify-content: space-around;
+      min-width:95%;
+
+      .attribute{
+        text-align: center;
+        font-size:1.2rem;
+        background-color: #61dafb;
+        margin:0 10px;
+        color:black;
+        padding:5px;
+        flex: 1;
+      }
+    }
+
+    .guess-history{
+      width:95%;
+      display:flex;
+      flex-direction:column;
+      background-color: #20232a;
+      margin:0;
+      
+      .player-info {
+        display: flex;
+        align-items: center; 
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      
+      .player-details {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+      }
+      
+      .player-attribute {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        font-size: 1.2rem;
+        border-radius: 5px;
+        min-width: 150px;
+        color: white;
+        margin: 0 10px;
+        box-sizing: border-box;
+        background-color: #333; 
+        justify-content: center;
+        flex: 1;
+      }
+      
+      .player-attribute.green {
+        min-height:20vh;
+        background-color: green;
+      }
+      
+      .player-attribute.red {
+        min-height:20vh;
+        background-color: red;
+      }
+    }
+  }
+
+  .help-modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      color: black;
+
+      h2{
+        font-size: 2rem;
+        margin-bottom: 10px;
+      }
+
+      p{
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+      }
+
+      button{
+        padding: 10px 20px;
+        font-size: 1rem;
+        background-color: #61dafb;
+        color: #282c34;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    }
+  }
 }
 
-/* Estilo para informações de tentativas */
-.attempts-info {
-  position: absolute;
-  top: 20px;
-  font-size: 1.2rem; /* Define o tamanho da fonte */
-  margin-bottom: 20px; /* Adiciona margem inferior */
-  color: #f0f0f0; /* Define a cor do texto */
-  font-weight: bold; /* Define o peso da fonte */
-}
-
-/* Estilo para a pontuação */
-.score-container {
-  position: absolute;
-  top: 160px; /* Ajuste a posição vertical conforme necessário */
-  right: 100px; /* Ajuste a posição horizontal conforme necessário */
-  display: flex;
-  flex-direction: column; /* Organize os itens verticalmente */
-  gap: 5px; /* Adiciona espaço entre os itens */
-  color: white; /* Define a cor do texto */
-}
-
-.score-container p {
-  font-size: 1.2rem; /* Define o tamanho da fonte */
-  font-weight: bold; /* Define o peso da fonte */
-}
-
-/* Estilo para o recorde */
-.high-score-container {
-  position: absolute;
-  top: 190px; /* Ajuste a posição vertical conforme necessário */
-  right: 100px; /* Ajuste a posição horizontal conforme necessário */
-  display: flex;
-  flex-direction: column; /* Organize os itens verticalmente */
-  gap: 5px; /* Adiciona espaço entre os itens */
-  color: white; /* Define a cor do texto */
-}
-
-.high-score-container p {
-  font-size: 1.2rem; /* Define o tamanho da fonte */
-  font-weight: bold; /* Define o peso da fonte */
-}
-
-/* Estilo do Modal (Tela de próximo jogo) */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.8);
-  z-index: 1000;
-}
-
-.modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  color: black;
-}
-
-/* Estilos para elementos dentro do modal */
-.modal-content h2 {
-  font-size: 2rem;
-  margin-bottom: 10px;
-}
-
-.modal-content p {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-}
-
-.modal-content button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  background-color: #61dafb;
-  color: #282c34;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.modal-content button:hover {
-  background-color: #21a1f1;
-}
-
-.modal-content .button-container { 
-  display: flex;
-  justify-content: center; 
-  gap: 10px; 
-}
-
-/* Estilo do botão de logout */
-.logout-button {
-  position: absolute;
-  top: 20px;
-  left: 60px;
-  padding: 10px 20px;
-  font-size: 1rem;
-  background-color: #61dafb;
-  color: #282c34;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.logout-button:hover {
-  background-color: #21a1f1;
-}
-
-/* Estilo do botão de ajuda */
-.help-button {
-  position: absolute;
-  top: 20px;
-  left: 210px;
-  padding: 10px 20px;
-  font-size: 1rem;
-  background-color: #61dafb;
-  color: #282c34;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.help-button:hover {
-  background-color: #21a1f1;
-}
-
-/* Estilo do botão de ranking */
-.ranking-button {
-  position: absolute;
-  top: 20px;
-  right: 100px;
-  padding: 10px 20px;
-  font-size: 1rem;
-  background-color: #61dafb;
-  color: #282c34;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.ranking-button:hover {
-  background-color: #21a1f1;
-}
-
-/* Estilo do cabeçalho */
-h1 {
-  font-size: 4rem;
-  margin-bottom: 80px;
-  font-family: 'Arial', sans-serif;
-}
-
-/* Estilo do formulário de busca */
-form {
-  margin-bottom: 40px;
-}
 
 input[type="text"] {
   padding: 10px;
@@ -185,7 +242,6 @@ input[type="text"] {
   margin-right: 10px;
 }
 
-/* Estilos de botões */
 button {
   padding: 10px 20px;
   font-size: 1.5rem;
@@ -196,197 +252,8 @@ button {
   cursor: pointer;
 }
 
-button:hover {
-  background-color: #21a1f1;
-}
-
-/* Estilos para indicadores */
-.indicator {
-  margin-left: 5px;
-}
-
-.higher .indicator {
-  color: red;
-}
-
-.lower .indicator {
-  color: red;
-}
-
-
-/* Estilo da lista de sugestões */
-.suggestions-list {
-  list-style-type: none;
-  padding: 0;
-  margin-top: 10px;
-  width: 29%;
-  background-color: #333;
-  border-radius: 5px;
-  overflow-y: auto;
-  max-height: 200px;
-  position: relative;
-  z-index: 1;
-}
-
-.suggestions-list li {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  cursor: pointer;
-  border-bottom: 1px solid #444;
-}
-
-.suggestions-list li:hover {
-  background-color: #555;
-}
-
-.suggestion-icon {
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
-}
-.suggestion-club {
-  width: 30px;
-  height: 30px;
-  margin-left: 10px;
-}
-
-/* Estilo do histórico de palpites */
-.guess-history {
-  display: flex;
-  flex-direction: column;
-  margin-top: 20px;
-  width: 100%;
-}
-
-/* Estilo do cabeçalho de atributos */
-.attribute-header {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 10px;
-  padding: 10px;
-  background-color: #20232a;
-  border-radius: 10px;
-  width: 100%; /* Ocupa a largura total do container */
-}
-
-.attribute-header div {
-  text-align: center;
-  font-size: 1.2rem;
-  color: white;
-  padding: 5px;
-  border-radius: 5px;
-  margin: 0 10px; /* Adiciona espaçamento entre as colunas */
-  background-color: #333; /* Define o fundo para os títulos */
-  flex: 1; /* Distribui o espaço igualmente entre as colunas */
-}
-
-/* Estilo das informações do jogador */
-.player-info {
-  display: flex;
-  align-items: center; /* Centraliza verticalmente os elementos */
-  width: 100%;
-  margin-bottom: 10px;
-}
-
-.player-details {
-  display: flex;
-  justify-content: space-around; /* Distribui o espaço entre os itens */
-  width: 100%;
-}
-
-.player-attribute {
-  display: flex;
-  align-items: center; /* Centraliza verticalmente o conteúdo */
-  padding: 10px;
-  font-size: 1.2rem;
-  border-radius: 5px;
-  min-width: 150px; /* Define a largura mínima para cada coluna */
-  color: white;
-  margin: 0 10px; /* Adiciona espaçamento entre as colunas */
-  box-sizing: border-box;
-  background-color: #333; /* Define o fundo para os atributos */
-  justify-content: center; /* Centraliza o conteúdo horizontalmente */
-  flex: 1; /* Distribui o espaço igualmente entre os itens */
-}
-
-.player-attribute.green {
-  background-color: green;
-}
-
-.player-attribute.red {
-  background-color: red;
-}
-
 .player-icon {
   width: 100px;
   height: auto;
   margin-right: 10px;
-}
-
-/* Estilos específicos para a tela de login e cadastro */
-.App-header {
-  width: 400px;
-  height: 300px;
-  background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente sobre a imagem */
-  border-radius: 10px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.App-header h1 {
-  font-size: 4rem;
-  color: white;
-  margin-bottom: 50px;
-}
-
-.input-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-}
-
-.form-input {
-  padding: 10px;
-  font-size: 1.5rem;
-  border-radius: 5px;
-  border: 1px solid #61dafb;
-  background-color: white;
-  color: #282c34;
-  width: 100%;
-  height: 30px;
-  margin-bottom: 15px;
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: #21a1f1;
-}
-
-.button-container {
-  display: flex;
-  justify-content: space-around;
-  gap: 10px;
-  width: 106%;
-  margin-top: 20px;
-}
-
-.form-button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  background-color: #61dafb;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 100%;
-  height: 40px;
-}
-
-.form-button:hover {
-  background-color: #21a1f1;
 }
