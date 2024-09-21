@@ -36,6 +36,18 @@ git clone https://github.com/4-ANO-COMP-IMT/vascodedagama.git
 cd vascodedagama
 ```
 
+**Crie e preencha o arquivo .env, utilizando o arquivo .env.example como exemplo:**
+
+```
+API_KEY=
+AUTH_DOMAIN=
+PROJECT_ID=
+STORAGE_BUCKET=
+MESSAGING_SENDER_ID=
+APP_ID=
+MEASUREMENT_ID=
+```
+
 **Inicie os serviços do back-end individualmente:**
 
 ```sh
