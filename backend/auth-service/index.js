@@ -4,15 +4,17 @@ const bodyParser = require('body-parser');
 const { initializeApp } = require('firebase/app');
 const { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } = require('firebase/auth');
 const axios = require('axios');  // Importando o Axios para enviar eventos para o Event Bus
+const dotenv = require('dotenv');
+dotenv.config({path: "../../.env"});
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDtsNBgEVJ1NJ5GqX3PCvOYSzb-CTRLDaI",
-  authDomain: "futdle.firebaseapp.com",
-  projectId: "futdle",
-  storageBucket: "futdle.appspot.com",
-  messagingSenderId: "754585551605",
-  appId: "1:754585551605:web:31d87a95a62c14e810bbbc",
-  measurementId: "G-WC9N2M4DB9"
+  apiKey: process.env.API_KEY,
+  authDomain: process.env.AUTH_DOMAIN,
+  projectId: process.env.PROJECT_ID,
+  storageBucket: process.env.STORAGE_BUCKET,
+  messagingSenderId: process.env.MESSAGING_SENDER_ID,
+  appId: process.env.APP_ID,
+  measurementId: process.env.MEASUREMENT_ID
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
