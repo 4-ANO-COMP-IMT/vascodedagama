@@ -36,6 +36,18 @@ git clone https://github.com/4-ANO-COMP-IMT/vascodedagama.git
 cd vascodedagama
 ```
 
+**Crie e preencha o arquivo .env, utilizando o arquivo .env.example como exemplo:**
+
+```
+FIREBASE_API_KEY=
+FIREBASE_AUTH_DOMAIN=
+FIREBASE_PROJECT_ID=
+FIREBASE_STORAGE_BUCKET=
+FIREBASE_MESSAGING_SENDER_ID=
+FIREBASE_APP_ID=
+FIREBASE_MEASUREMENT_ID=
+```
+
 **Inicie os serviços do back-end individualmente:**
 
 ```sh
@@ -109,7 +121,7 @@ Acesse a aplicação via navegador no endereço http://localhost:3000.
   },
   "createdAt": "1719769733028",
   "lastLoginAt": "1719769733028",
-  "apiKey": "AIzaSyDtsNBgEVJ1NJ5GqX3PCvOYSzb-CTRLDaI",
+  "apiKey": "???????",
   "appName": "[DEFAULT]"
 }
 ```
