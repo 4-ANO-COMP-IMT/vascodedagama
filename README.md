@@ -48,24 +48,27 @@ FIREBASE_APP_ID=
 FIREBASE_MEASUREMENT_ID=
 ```
 
-**Inicie os serviços do back-end individualmente:**
+**Instale as dependências dos serviços do back-end individualmente:**
 
 ```sh
 cd backend
 
+cd ..
+
 cd auth-service
 npm install
-node index.js
+
+cd ..
 
 cd player-service
 npm install
-node index.js
+
+cd ..
 
 cd event-bus
 npm install
-node index.js
 ```
-**Ou Inicie os serviços do back-end em conjunto:**
+**Inicie os serviços do back-end:**
 
 ```sh
 cd backend
@@ -74,6 +77,7 @@ npm run start-all
 ```
 
 ### Inicie o servidor front-end:
+
 ```sh
 cd frontend
 cd championsdle-frontend
@@ -160,7 +164,7 @@ Acesse a aplicação via navegador no endereço http://localhost:3000.
   },
   "createdAt": "1717027017014",
   "lastLoginAt": "1719769639116",
-  "apiKey": "AIzaSyDtsNBgEVJ1NJ5GqX3PCvOYSzb-CTRLDaI",
+  "apiKey": "???????",
   "appName": "[DEFAULT]"
 }
 ```

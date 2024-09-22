@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Login from './Components/Login/Login';
 import './App.css';
 
 const renderAttribute = (label, age, color, icon) => {
@@ -28,6 +27,9 @@ const App = () => {
   const [player, setPlayer] = useState(null);
   const [secretPlayer, setSecretPlayer] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [isCadastro, setCadastro] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [isPalpitarDisabled, setIsPalpitarDisabled] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
@@ -106,7 +108,7 @@ const App = () => {
   
       if (playerData) {
         setPlayer(playerData);
-        const newColor = checkAttributes(playerData);
+        const newColor = checkAttributes(playerData); // Calcula as cores do jogador
 
         // Verifica se o jogador já foi palpitao e se ele é o jogador secreto
         if (!guessHistory.some(guess => guess.player.name === playerData.name) &&
@@ -163,8 +165,22 @@ const App = () => {
   };
 
   const handleLogin = async (e) => {
-    setSecretPlayer(secretPlayer);
-    setIsLoggedIn(true);
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:3001/login', {
+        email: username,
+        password: password
+      });
+
+      setIsLoggedIn(true);
+      localStorage.setItem('isLoggedIn', 'true');
+      setSecretPlayer(response.data.secretPlayer);
+      localStorage.setItem('secretPlayer', JSON.stringify(response.data.secretPlayer));
+      setIsPalpitarDisabled(false);
+    } catch (error) {
+      console.error('Erro ao fazer login:', error);
+      alert('Usuário ou senha inválidos.');
+    }
   };
 
   const handleLogout = () => {
@@ -173,6 +189,21 @@ const App = () => {
     setIsLoggedIn(false);
     setSecretPlayer(null);
     setPlayer(null);
+  };
+
+  const handleCadastro = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post('http://localhost:3001/signup', {
+        email: username,
+        password: password
+      });
+      alert('Cadastro realizado com sucesso! Faça login.');
+      setCadastro(false);
+    } catch (error) {
+      console.error('Erro ao cadastrar:', error);
+      alert('Erro ao realizar cadastro.');
+    }
   };
 
   const checkAttributes = (playerData) => {
@@ -195,70 +226,143 @@ const App = () => {
     return newColor; // Retorna o objeto de cores
   };
 
-  if (!isLoggedIn) {
-    return <Login onLoginSucess={handleLogin} />;
-  } else {
+  if (isCadastro) {
     return (
-      <main class="App-Main">
-        <section class="App-Section">
-          <div class="buttons-div">
-            <button onClick={handleLogout}>Logout</button>
-          </div>
-          <div class="buttons-div">
-            <span>Pontuação: {score}</span>
-            <span>Recorde: {highScore}</span>
-          </div>
-          <div class="buttons-div">
-            <button onClick={handleShowRanking}>Ranking</button>
-            <button onClick={handleShowHelp}>Ajuda</button>
-          </div>
-        </section>
-        <header class="App-Header">
-          <h1>CHAMPIONSDLE</h1>
-        </header>
-        <section class="App-Body">
-          <form onSubmit={handleSearch} class="input-jogadores">
-            <div>
+      <div className="App">
+        <header className="App-header">
+          <h1>Cadastro</h1>
+          <form onSubmit={handleCadastro}>
+            <div className="input-container">
               <input
+                className="form-input"
                 type="text"
-                placeholder="Inserir nome de Jogador"
-                value={playerName}
-                onChange={handleInputChange}
-                className="player-input"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
-              <button type="submit" disabled={isPalpitarDisabled} class="button-palpite">
-                Palpitar
+              <input
+                className="form-input"
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div className="button-container">
+              <button className="form-button" 
+                onClick={(e) => { e.preventDefault(); setCadastro(false);
+                }}>
+                Voltar
+              </button>
+              <button className="form-button" type="submit">
+                Cadastrar
               </button>
             </div>
-            <div>
-              {suggestions.length > 0 && (
-              <ul className="suggestions-list">
-                {suggestions.map((suggestion) => (
-                  <li
-                    key={suggestion.name}
-                    onClick={() => handleSuggestionClick(suggestion)}
-                  >
-                    <img src={suggestion.icon} alt={suggestion.name} className="suggestion-icon" />
-                    <span>{suggestion.name}</span>
-                    <img src={suggestion.club_logo} alt={suggestion.club_logo} className="suggestion-club" />
-                  </li>
-                ))}
-              </ul>
-              )}
+          </form>
+        </header>
+      </div>
+    );
+  } if (!isLoggedIn) {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <h1>Login</h1>
+          <form onSubmit={handleLogin}>
+            <div className="input-container">
+              <input
+                className="form-input"
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <input
+                className="form-input"
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div className="button-container">
+              <button className="form-button" 
+                onClick={(e) => { e.preventDefault(); setCadastro(true);}}>
+                Cadastro
+              </button>
+              <button className="form-button" type="submit">
+                Login
+              </button>
             </div>
           </form>
-
-          {guessHistory.length > 0 && (
-          <div className="header-attributes">
-            <div class="attribute">Jogador</div>
-            <div class="attribute">Altura</div>
-            <div class="attribute">Time</div>
-            <div class="attribute">Idade</div>
-            <div class="attribute">Nacionalidade</div>
-            <div class="attribute">Posição</div>
-            <div class="attribute">Liga</div>
-          </div>)}
-          <div class="guess-history">
+        </header>
+      </div>
+    );
+  } else {
+    return (
+      <div className="App">
+        <button className="logout-button" onClick={handleLogout}>
+          Logout
+        </button>
+        <button onClick={handleShowRanking} className="ranking-button">
+          Ranking
+        </button>
+        <button onClick={handleShowHelp} className="help-button">
+          Ajuda
+        </button>
+        {/* Exibindo informações de tentativas */}
+        {guessHistory.length > 0 && (
+        <p className="attempts-info">
+          {attempts >= 6 ? 'O jogador secreto não foi adivinhado.' :
+            player && player.name.toLowerCase() === secretPlayer.name.toLowerCase() ? 
+            `Você acertou o jogador secreto: ${secretPlayer.name}!` : 
+            `Você possui ${6 - attempts} tentativas restantes.`
+          }
+        </p>)}
+        {/* Exibindo a pontuação atual e recorde */}
+        <div className="score-container">
+          <p>Pontuação: {score}</p>
+        </div>
+        <div className="high-score-container">
+          <p>Recorde: {highScore}</p> 
+        </div>
+        <h1>Championsdle</h1>
+        <form onSubmit={handleSearch}>
+          <input
+            type="text"
+            placeholder="Inserir nome de Jogador"
+            value={playerName}
+            onChange={handleInputChange}
+            className="player-input"
+          />
+          <button type="submit" disabled={isPalpitarDisabled}>Palpitar</button>
+        </form>
+        {suggestions.length > 0 && (
+          <ul className="suggestions-list">
+            {suggestions.map((suggestion) => (
+              <li
+                key={suggestion.name}
+                onClick={() => handleSuggestionClick(suggestion)}
+              >
+                <img src={suggestion.icon} alt={suggestion.name} className="suggestion-icon" />
+                <span>{suggestion.name}</span>
+                <img src={suggestion.club_logo} alt={suggestion.club_logo} className="suggestion-club" />
+              </li>
+            ))}
+          </ul>
+        )}
+        {/* Linha de cabeçalho com os rótulos dos atributos */}
+        {guessHistory.length > 0 && (
+        <div className="attribute-header">
+          <div>Jogador</div>
+          <div>Altura</div>
+          <div>Time</div>
+          <div>Idade</div>
+          <div>Nacionalidade</div>
+          <div>Posição</div>
+          <div>Liga</div>
+        </div>)}
+        {/* Exibindo o histórico dos palpites */}
+        <div className="guess-history">
           {guessHistory.map((guess, index) => (
             <div key={index} className="player-info">
               <div className="player-details">
@@ -287,67 +391,67 @@ const App = () => {
               </div>
             </div>
           ))}
-          </div>
-        </section>
-
+        </div>
         {showHelpModal && (
-            <div class="help-modal">
-              <div class="modal-content">
-                <h2>Como Jogar</h2>
-                <p>
-                  O Championsdle é um jogo que desafia você a adivinhar um jogador secreto de futebol.
-                  Você tem seis tentativas para descobrir quem é o jogador, usando as dicas fornecidas.
-                  Após cada palpite, você receberá dicas sobre os atributos do jogador.
-                </p>
-                <p>
-                  <b>Dicas:</b>
-                </p>
-                <ul>
-                  <li>
-                    <b>Verde</b> Significa que o atributo está correto.
-                  </li>
-                  <li>
-                    <b>Vermelho</b> Significa que o atributo está errado
-                 </li>
-                 <li>
-                  <b>Vermelho com seta para baixo</b> Significa que o atributo é maior que o do jogador secreto
-                 </li>
-                 <li>
-                  <b>Vermelho com seta para cima</b> Significa que o atributo é menor que o do jogador secreto
-                 </li>
-                </ul>
-                <button onClick={handleCloseHelpModal}>Fechar</button>
-              </div>
+          <div className="modal">
+            <div className="modal-content">
+              <h2>Como Jogar</h2>
+              <p>
+                O Championsdle é um jogo que desafia você a adivinhar um jogador secreto de futebol.
+                Você tem seis tentativas para descobrir quem é o jogador, usando as dicas fornecidas.
+                Após cada palpite, você receberá dicas sobre os atributos do jogador.
+              </p>
+              <p>
+                <b>Dicas:</b>
+              </p>
+              <ul>
+                <li>
+                  <b>Verde:</b>  Significa que o atributo está correto.
+                </li>
+                <li>
+                  <b>Vermelho:</b>  Significa que o atributo está incorreto.
+                </li>
+                <li>
+                  <b>Vermelho com seta para baixo (⬇️):</b>  Significa que o atributo é maior do que o do jogador secreto.
+                </li>
+                <li>
+                  <b>Vermelho com seta para cima (⬆️):</b> Significa que o atributo é menor do que o do jogador secreto.
+                </li>
+              </ul>
+              <button onClick={handleCloseHelpModal}>Fechar</button>
             </div>
-          )}
-          {showRankingModal && (
-          <div className="help-modal">
+          </div>
+        )}
+        {/* Protótipo de ranking, quando for adicionado banco de dados ele terá funcionalidade */}
+        {showRankingModal && (
+          <div className="modal">
             <div className="modal-content">
               <h2>Carregando ranking...</h2>
               <button onClick={handleCloseRankingModal}>Fechar</button>
             </div>
           </div>
         )}
-          {showModal && (
-            <div class="help-modal">
-              <div class="modal-content">
-                {attempts >= 6 && (
-                  <h2> Você não adivinhou o jogador secreto =( </h2>
-                )}
-                {attempts < 6 && player && player.name.toLowerCase() === secretPlayer.name.toLowerCase() && (
-                  <h2> Parabéns! Você venceu =) </h2>
-                )}
-                <p>
-                  {attempts >= 6 ? 'O jogador secret não foi adivinhado.' :
-                    player && player.name.toLowerCase() === secretPlayer.name.toLowerCase() ?
-                    `Você acertou o jogador secreto: ${secretPlayer.name}!` : 
-                    null}
-                </p>
-                <button onClick={handleNewPlayer}>Sortear novo jogador</button>
-              </div>
+        {showModal && (
+          <div className="modal">
+            <div className="modal-content">
+            {attempts >= 6 && (
+                <h2>Você não adivinhou o jogador secreto!</h2>
+              )}
+              {attempts < 6 && player && player.name.toLowerCase() === secretPlayer.name.toLowerCase() && (
+                <h2>Parabéns!</h2>
+              )}
+              <p>
+                {attempts >= 6 ? 'O jogador secreto não foi adivinhado.' :
+                  player && player.name.toLowerCase() === secretPlayer.name.toLowerCase() ? 
+                  `Você acertou o jogador secreto: ${secretPlayer.name}!` : 
+                  null
+                }
+              </p>
+              <button onClick={handleNewPlayer}>Sortear Novo Jogador</button>
             </div>
-          )}
-      </main>
+          </div>
+        )}
+      </div>
     );
   }
 };

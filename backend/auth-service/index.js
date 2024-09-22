@@ -5,7 +5,7 @@ const { initializeApp } = require('firebase/app');
 const { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } = require('firebase/auth');
 const axios = require('axios');  // Importando o Axios para enviar eventos para o Event Bus
 const dotenv = require('dotenv');
-dotenv.config({path: "../../.env"});
+dotenv.config({path: "../.env"});
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
