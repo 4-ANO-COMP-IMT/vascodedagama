@@ -53,8 +53,6 @@ FIREBASE_MEASUREMENT_ID=
 ```sh
 cd backend
 
-cd ..
-
 cd auth-service
 npm install
 
@@ -71,6 +69,7 @@ npm install
 **Inicie os serviços do back-end:**
 
 ```sh
+cd ..
 cd backend
 npm install -g concurrently
 npm run start-all
@@ -79,6 +78,7 @@ npm run start-all
 ### Inicie o servidor front-end:
 
 ```sh
+cd ..
 cd frontend
 cd championsdle-frontend
 npm install
@@ -95,7 +95,7 @@ Acesse a aplicação via navegador no endereço http://localhost:3000.
 
 ```sh
 {
-  "email": "cafmo2312@gmail.com",
+  "email": "teste12@gmail.com",
   "password": "senha1"
 }
 ```
@@ -105,15 +105,15 @@ Acesse a aplicação via navegador no endereço http://localhost:3000.
 ```sh
 {
   "uid": "sNCmqbZRuBPVGc4PVcS3zb4D4X22",
-  "email": "cafmo2312@gmail.com",
+  "email": "teste12@gmail.com",
   "emailVerified": false,
   "isAnonymous": false,
   "providerData": [
     {
       "providerId": "password",
-      "uid": "cafmo2312@gmail.com",
+      "uid": "teste12@gmail.com",
       "displayName": null,
-      "email": "cafmo2312@gmail.com",
+      "email": "teste12@gmail.com",
       "phoneNumber": null,
       "photoURL": null
     }
@@ -135,7 +135,7 @@ Acesse a aplicação via navegador no endereço http://localhost:3000.
 
 ```sh
 {
-  "email": "cafmo2312@gmail.com",
+  "email": "teste12@gmail.com",
   "password": "senha1"
 }
 ```
@@ -144,15 +144,15 @@ Acesse a aplicação via navegador no endereço http://localhost:3000.
 ```sh
 {
   "uid": "1SJmOIjvpEP51Kv1fIGA4KsHRbw2",
-  "email": "cafmo2312@gmail.com",
+  "email": "teste12@gmail.com",
   "emailVerified": false,
   "isAnonymous": false,
   "providerData": [
     {
       "providerId": "password",
-      "uid": "cafmo2312@gmail.com",
+      "uid": "teste12@gmail.com",
       "displayName": null,
-      "email": "cafmo2312@gmail.com",
+      "email": "teste12@gmail.com",
       "phoneNumber": null,
       "photoURL": null
     }
@@ -175,7 +175,7 @@ Acesse a aplicação via navegador no endereço http://localhost:3000.
 
 ```sh
 {
-  "email": "cafmo2312@gmail.com",
+  "email": "teste12@gmail.com",
   "password": "senha1"
 }
 ```
@@ -271,14 +271,14 @@ Acesse a aplicação via navegador no endereço http://localhost:3000.
     "type": "Usuario Criado",
     "data": {
       "id": "sNCmqbZRuBPVGc4PVcS3zb4D4X22",
-      "email": "cafmo2312@gmail.com"
+      "email": "teste12@gmail.com"
     }
   },
     {
     "type": "Usuario Logado",
     "data": {
       "id": "1SJmOIjvpEP51Kv1fIGA4KsHRbw2",
-      "email": "cafmo2312@gmail.com"
+      "email": "teste12@gmail.com"
     }
   },
   {
