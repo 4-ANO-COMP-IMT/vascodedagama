@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: player-service
+  labels:
+    app: player-service
+spec:
+  selector:
+    matchLabels:
+      app: player-service
+  template:
+    metadata:
+      labels:
+        app: player-service
+    spec:
+      containers:
+      - name: meu-container
+        image: player-service:v1
+        ports:
+        - containerPort: 4000 
