@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => LoginPage(),
       },
+      // theme of blue colors and white font
     );
   }
 }
