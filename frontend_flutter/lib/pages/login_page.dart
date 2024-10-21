@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_flutter/pages/home_page.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -14,7 +15,8 @@ class LoginPage extends StatelessWidget {
           icon: const Icon(Icons.home),
           onPressed: () {
             // Navigate to the home page using a named route.
-            Navigator.pushNamed(context, '/');
+            // Navigator.pushNamed(context, '/');
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage(isLoggedIn: false,)));
           },
         ),
         title: const Text('Login'),
@@ -48,6 +50,7 @@ class LoginPage extends StatelessWidget {
                 // Handle login logic here
                 String email = _emailController.text;
                 String password = _passwordController.text;
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage(isLoggedIn: true,)));
                 print('Email: $email, Senha: $password');
               },
               child: const Text('Login'),
