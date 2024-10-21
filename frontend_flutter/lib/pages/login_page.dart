@@ -11,13 +11,14 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField( 
+            TextField(
               controller: _emailController,
               decoration: const InputDecoration(
                 labelText: 'Email',
@@ -29,7 +30,7 @@ class LoginPage extends StatelessWidget {
             TextField(
               controller: _passwordController,
               decoration: const InputDecoration(
-                labelText: 'Password',
+                labelText: 'Senha',
                 border: OutlineInputBorder(),
               ),
               obscureText: true,
@@ -40,9 +41,17 @@ class LoginPage extends StatelessWidget {
                 // Handle login logic here
                 String email = _emailController.text;
                 String password = _passwordController.text;
-                print('Email: $email, Password: $password');
+                print('Email: $email, Senha: $password');
               },
               child: const Text('Login'),
+            ),
+            // Add a button that navigates to the register page. The button is only a clickable text
+            const SizedBox(height: 16.0),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/register');
+              },
+              child: const Text('Não tem uma conta? Registre-se'),
             ),
           ],
         ),
