@@ -10,6 +10,13 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.home),
+          onPressed: () {
+            // Navigate to the home page using a named route.
+            Navigator.pushNamed(context, '/');
+          },
+        ),
         title: const Text('Login'),
         centerTitle: true,
       ),

@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class RegisterPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  LoginPage({super.key});
+  RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.home),
+          onPressed: () {
+            Navigator.pushNamed(context, '/');
+          },
+        ),
         title: const Text('Registrar'),
         centerTitle: true,
       ),
@@ -53,6 +59,6 @@ class LoginPage extends StatelessWidget {
 
 void main() {
   runApp(MaterialApp(
-    home: LoginPage(),
+    home: RegisterPage(),
   ));
 }
