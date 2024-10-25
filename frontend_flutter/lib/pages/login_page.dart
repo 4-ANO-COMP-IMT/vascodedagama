@@ -1,8 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:frontend_flutter/pages/home_page.dart';
-import 'package:http/http.dart' as http;
+import 'package:frontend_flutter/app_provider.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -10,45 +8,13 @@ class LoginPage extends StatelessWidget {
 
   LoginPage({super.key});
 
-  Future<bool> _login() async {
-    // Implement login logic here
-    String email = _emailController.text;
-    String password = _passwordController.text;
-
-    final body = jsonEncode({
-      'email': email,
-      'password': password,
-    });
-
-    final headers = {'Content-Type': 'application/json'};
-
-    var response = await http.post(
-      Uri.parse('http://localhost:3001/login'),
-      headers: headers,
-      body: body,
-    );
-
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.home),
-          onPressed: () {
-            // Navigate to the home page using a named route.
-            // Navigator.pushNamed(context, '/');
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage(isLoggedIn: false,)));
-          },
-        ),
         title: const Text('Login'),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -75,11 +41,23 @@ class LoginPage extends StatelessWidget {
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                // Handle login logic here
-                String email = _emailController.text;
-                String password = _passwordController.text;
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage(isLoggedIn: true,)));
-                print('Email: $email, Senha: $password');
+                // Usando o AppProvider para autenticação
+                final appProvider = Provider.of<AppProvider>(context, listen: false);
+                
+                appProvider.login(
+                  _emailController.text, 
+                  _passwordController.text,
+                ).then((success) {
+                  if (success) {
+                    // Login bem-sucedido, navega para a home
+                    Navigator.pushReplacementNamed(context, '/');
+                  } else {
+                    // Exibindo mensagem de erro
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Erro ao fazer login')),
+                    );
+                  }
+                });
               },
               child: const Text('Login'),
             ),
@@ -90,7 +68,7 @@ class LoginPage extends StatelessWidget {
                 Navigator.pushNamed(context, '/register');
               },
               child: const Text('Não tem uma conta? Registre-se'),
-            ),
+            ),  
           ],
         ),
       ),
@@ -99,7 +77,12 @@ class LoginPage extends StatelessWidget {
 }
 
 void main() {
-  runApp(MaterialApp(
-    home: LoginPage(),
-  ));
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => AppProvider(),
+      child: MaterialApp(
+        home: LoginPage(),
+      ),
+    ),
+  );
 }

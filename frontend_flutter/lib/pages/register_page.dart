@@ -1,36 +1,13 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:frontend_flutter/app_provider.dart';
 import 'package:frontend_flutter/pages/home_page.dart';
-import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   RegisterPage({super.key});
-
-  Future<bool> _register() async {
-    String email = _emailController.text;
-    String password = _passwordController.text;
-    
-    final body = jsonEncode({
-      'email': email,
-      'password': password,
-    });
-    final headers = {'Content-Type': 'application/json'};
-    var response = await http.post(
-      Uri.parse('http://localhost:3001/signup'),
-      headers: headers,
-      body: body,
-    );
-
-    if (response.statusCode == 201) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,14 +17,14 @@ class RegisterPage extends StatelessWidget {
           icon: const Icon(Icons.home),
           onPressed: () {
             Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const HomePage(isLoggedIn: false)));
-            // Navigator.pushNamed(context, '/');
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage(isLoggedIn: false,)),
+            );
           },
         ),
         title: const Text('Registrar'),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -74,16 +51,29 @@ class RegisterPage extends StatelessWidget {
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                _register().then((value) {
+                // Obtendo o AppProvider e chamando o método register
+                final appProvider = Provider.of<AppProvider>(context, listen: false);
+
+                appProvider.register(
+                  _emailController.text,
+                  _passwordController.text,
+                ).then((value) {
                   if (value) {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const HomePage(isLoggedIn: true)));
+                   // Após o registro, faça o login automaticamente
+                    appProvider.login(_emailController.text, _passwordController.text).then((loginSuccess) {
+                      if (loginSuccess) {
+                        // Redirecionando para a HomePage após login
+                        Navigator.pushReplacementNamed(context, '/');
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Erro ao fazer login após o registro')),
+                        );
+                      }
+                    });
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Erro ao registrar')));
+                      const SnackBar(content: Text('Erro ao registrar')),
+                    );
                   }
                 });
               },
@@ -97,7 +87,12 @@ class RegisterPage extends StatelessWidget {
 }
 
 void main() {
-  runApp(MaterialApp(
-    home: RegisterPage(),
-  ));
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => AppProvider(),
+      child: MaterialApp(
+        home: RegisterPage(),
+      ),
+    ),
+  );
 }
