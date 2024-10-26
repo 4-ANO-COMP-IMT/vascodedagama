@@ -4,6 +4,7 @@ import 'package:frontend_flutter/pages/login_page.dart';
 import 'package:frontend_flutter/pages/register_page.dart';
 import 'package:frontend_flutter/pages/profile_page.dart';
 import 'package:provider/provider.dart';
+import 'package:frontend_flutter/game_state.dart';
 import 'app_provider.dart';
 
 void main() {
@@ -11,6 +12,10 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AppProvider()),
+        ChangeNotifierProxyProvider<AppProvider, GameState>(
+          create: (_) => GameState(appProvider: AppProvider()),
+          update: (_, appProvider, gameState) => GameState(appProvider: appProvider),
+        ),
       ],
       child: const MyApp(),
     ),

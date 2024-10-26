@@ -24,6 +24,7 @@ class LoginPage extends StatelessWidget {
             TextField(
               controller: _emailController,
               decoration: const InputDecoration(
+                hintText: 'seu@email.com',
                 labelText: 'Email',
                 border: OutlineInputBorder(),
               ),
@@ -33,6 +34,7 @@ class LoginPage extends StatelessWidget {
             TextField(
               controller: _passwordController,
               decoration: const InputDecoration(
+                hintText: 'Senha',
                 labelText: 'Senha',
                 border: OutlineInputBorder(),
               ),

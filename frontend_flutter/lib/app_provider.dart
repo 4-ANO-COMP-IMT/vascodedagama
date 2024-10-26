@@ -66,4 +66,27 @@ class AppProvider extends ChangeNotifier {
     _secretPlayer = null;
     notifyListeners();
   }
+
+  Future<void> loadNewSecretPlayer() async {
+    final url = Uri.parse('http://localhost:3002/secret-player');
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        _secretPlayer = data; // Armazena o jogador completo
+        notifyListeners();
+      } else if (response.statusCode == 404) {
+        _secretPlayer = {'error': 'Nenhum jogador disponível'};
+        notifyListeners();
+      } else {
+        throw Exception('Falha ao carregar o jogador secreto');
+      }
+    } catch (e) {
+      print('Erro ao carregar o jogador secreto: $e');
+      _secretPlayer = {'error': 'Erro ao carregar jogador'};
+      notifyListeners();
+    }
+  }
 }

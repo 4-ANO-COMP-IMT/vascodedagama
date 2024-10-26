@@ -34,6 +34,7 @@ class RegisterPage extends StatelessWidget {
             TextField(
               controller: _emailController,
               decoration: const InputDecoration(
+                hintText: 'seu@email.com',
                 labelText: 'Email',
                 border: OutlineInputBorder(),
               ),
