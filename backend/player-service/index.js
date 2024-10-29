@@ -431,6 +431,21 @@ app.get('/players/:id', (req, res) => {
   }
 });
 
+// Get em jogador por name
+app.get('/players', (req, res) => {
+  const playerName = req.query.name; // Get the name from the query parameter
+  if (playerName) {
+    const player = players.find(p => p.name.toLowerCase() === playerName.toLowerCase());
+    if (player) {
+      res.status(200).send(player);
+    } else {
+      res.status(404).send({ error: 'Jogador não encontrado' });
+    }
+  } else {
+    res.status(400).send({ error: 'Nome do jogador não fornecido' });
+  }
+});
+
 // Adiciona um novo jogador manualmente 
 app.post('/players', (req, res) => {
   const newPlayer = {
