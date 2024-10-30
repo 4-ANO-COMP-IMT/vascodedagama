@@ -143,15 +143,14 @@ class AppProvider extends ChangeNotifier {
         'name': data['name'], 
         'icon': data['icon'],
         'height': int.parse(data['height']),
-        'price': int.tryParse(data['price'].replaceAll('€', '').trim()) ?? 0, // Remove euro and trim spaces
-        'foot': data['foot'],
+        'price': int.tryParse(data['price'].replaceAll('€', '').trim()) ?? 0, // Remove euro e espaços
         'team': data['team'],
         'league': data['league'],
         'club_logo': data['club_logo'],
         'country': data['country'],
         'position': data['position'],
         'age': int.parse(data['age']),
-      }; // Store the complete player as a Map 
+      }; // Armazena o jogador como um Mapa
       notifyListeners();
     } else if (response.statusCode == 404) {
       _secretPlayer = {'error': 'Nenhum jogador disponível'};
