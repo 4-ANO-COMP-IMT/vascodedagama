@@ -144,6 +144,7 @@ class AppProvider extends ChangeNotifier {
         'icon': data['icon'],
         'height': int.parse(data['height']),
         'price': int.tryParse(data['price'].replaceAll('€', '').trim()) ?? 0, // Remove euro e espaços
+        'foot': data['foot'],
         'team': data['team'],
         'league': data['league'],
         'club_logo': data['club_logo'],
