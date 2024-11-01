@@ -9,6 +9,43 @@ class RegisterPage extends StatelessWidget {
 
   RegisterPage({super.key});
 
+  _handleRegister(BuildContext context) {
+    final appProvider = Provider.of<AppProvider>(context, listen: false);
+
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Preencha todos os campos')),
+      );
+      return;
+    }
+
+    appProvider
+        .register(
+      _emailController.text,
+      _passwordController.text,
+    )
+        .then((success) {
+      if (success) {
+        appProvider
+            .login(_emailController.text, _passwordController.text)
+            .then((loginSuccess) {
+          if (loginSuccess) {
+            Navigator.pushReplacementNamed(context, '/');
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  content: Text('Erro ao fazer login após o registro')),
+            );
+          }
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Erro ao registrar')),
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +55,10 @@ class RegisterPage extends StatelessWidget {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const HomePage(isLoggedIn: false,)),
+              MaterialPageRoute(
+                  builder: (context) => const HomePage(
+                        isLoggedIn: false,
+                      )),
             );
           },
         ),
@@ -39,6 +79,7 @@ class RegisterPage extends StatelessWidget {
                 border: OutlineInputBorder(),
               ),
               keyboardType: TextInputType.emailAddress,
+              onEditingComplete: () => _handleRegister(context),
             ),
             const SizedBox(height: 16.0),
             TextField(
@@ -48,35 +89,12 @@ class RegisterPage extends StatelessWidget {
                 border: OutlineInputBorder(),
               ),
               obscureText: true,
+              onEditingComplete: () => _handleRegister(context),
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                // Obtendo o AppProvider e chamando o método register
-                final appProvider = Provider.of<AppProvider>(context, listen: false);
-
-                appProvider.register(
-                  _emailController.text,
-                  _passwordController.text,
-                ).then((value) {
-                  if (value) {
-                   // Após o registro, faça o login automaticamente
-                    appProvider.login(_emailController.text, _passwordController.text).then((loginSuccess) {
-                      if (loginSuccess) {
-                        // Redirecionando para a HomePage após login
-                        Navigator.pushReplacementNamed(context, '/');
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Erro ao fazer login após o registro')),
-                        );
-                      }
-                    });
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Erro ao registrar')),
-                    );
-                  }
-                });
+                _handleRegister(context);
               },
               child: const Text('Registrar'),
             ),
