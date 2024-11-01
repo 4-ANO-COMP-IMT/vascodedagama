@@ -8,6 +8,30 @@ class LoginPage extends StatelessWidget {
 
   LoginPage({super.key});
 
+  _loginHandle(BuildContext context) {
+    final appProvider = Provider.of<AppProvider>(context, listen: false);
+
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Preencha todos os campos')),
+      );
+      return;
+    }
+
+    appProvider.login(
+      _emailController.text,
+      _passwordController.text,
+    ).then((success) {
+      if (success) {
+        Navigator.pushReplacementNamed(context, '/');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Erro ao fazer login')),
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,6 +53,7 @@ class LoginPage extends StatelessWidget {
                 border: OutlineInputBorder(),
               ),
               keyboardType: TextInputType.emailAddress,
+              onEditingComplete: () => _loginHandle(context),
             ),
             const SizedBox(height: 16.0),
             TextField(
@@ -39,27 +64,12 @@ class LoginPage extends StatelessWidget {
                 border: OutlineInputBorder(),
               ),
               obscureText: true,
+              onEditingComplete: () => _loginHandle(context),
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                // Usando o AppProvider para autenticação
-                final appProvider = Provider.of<AppProvider>(context, listen: false);
-                
-                appProvider.login(
-                  _emailController.text, 
-                  _passwordController.text,
-                ).then((success) {
-                  if (success) {
-                    // Login bem-sucedido, navega para a home
-                    Navigator.pushReplacementNamed(context, '/');
-                  } else {
-                    // Exibindo mensagem de erro
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Erro ao fazer login')),
-                    );
-                  }
-                });
+                _loginHandle(context);
               },
               child: const Text('Login'),
             ),
