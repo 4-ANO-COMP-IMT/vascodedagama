@@ -73,15 +73,17 @@ class GameState extends ChangeNotifier {
           final guessedPlayerData = appProvider.players.firstWhere((player) => player['id'] == guessedPlayerId);
           addToGuessHistory(
             Player(
-              guessedPlayerData['id'],
-              guessedPlayerData['name'],
-              guessedPlayerData['team'],
-              guessedPlayerData['foot'],
-              guessedPlayerData['height'],
-              guessedPlayerData['position'],
-              guessedPlayerData['age'],
-              guessedPlayerData['league'],
-              guessedPlayerData['country']
+              id: guessedPlayerData['id'],
+              name: guessedPlayerData['name'],
+              team: guessedPlayerData['team'],
+              foot: guessedPlayerData['foot'],
+              height: guessedPlayerData['height'],
+              icon: guessedPlayerData['icon'],
+              clubLogo: guessedPlayerData['club_logo'],
+              position: guessedPlayerData['position'],
+              age: guessedPlayerData['age'],
+              league: guessedPlayerData['league'],
+              country: guessedPlayerData['country']
             ), 
           true
         );
@@ -173,11 +175,12 @@ class Player {
   final String team; 
   final String foot; 
   final int height; 
-  final String icon = 'https://via.placeholder.com/150';
+  final String? icon;
   final String position;
   final int age;
   final String league;
+  final String? clubLogo;
   final String country;
 
-  Player(this.id, this.name, this.team, this.foot, this.height, this.position, this.age, this.league, this.country);
+  Player({required this.id, required this.name, required this.team, required this.foot, required this.height, this.icon='https://via.placeholder.com/150', this.clubLogo='https://via.placeholder.com/30',  required this.position, required this.age, required this.league, required this.country});
 }
