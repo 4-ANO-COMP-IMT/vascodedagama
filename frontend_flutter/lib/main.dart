@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_flutter/pages/help_page.dart';
 import 'package:frontend_flutter/pages/home_page.dart';
 import 'package:frontend_flutter/pages/login_page.dart';
 import 'package:frontend_flutter/pages/register_page.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       initialRoute: '/',
       title: 'Flutter Demo',
       home: const HomePage(isLoggedIn: false),
@@ -36,6 +38,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginPage(),
         '/register': (context) => RegisterPage(),
         '/profile': (context) => ProfilePage(),
+        '/help': (context) => const HelpPage(),
       },
       // theme of blue colors and white font
     );
