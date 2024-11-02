@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class ProfileDialog extends StatelessWidget {
   final String name;
   final int score;
+  final int highScore;
   final VoidCallback onLogout;
 
   const ProfileDialog({
     super.key,
     required this.name,
     required this.score,
+    required this.highScore,
     required this.onLogout,
   });
 
@@ -30,16 +32,12 @@ class ProfileDialog extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('Nome: $name'),
+          Text('Usuário: $name'),
           const SizedBox(height: 8.0),
           Text('Pontuação: $score'),
           const SizedBox(height: 8.0),
-          TextButton(onPressed: () {
-            // Adicione a navegação para a página de perfil
-            Navigator.pushNamed(context, '/profile');
-          }, child: 
-            const Text('Mais Detalhes'),
-          ),
+          Text('Melhor Pontuação: $highScore'),
+          const SizedBox(height: 8.0),
         ],
       ),
       actions: [
