@@ -3,7 +3,6 @@ import 'package:frontend_flutter/pages/help_page.dart';
 import 'package:frontend_flutter/pages/home_page.dart';
 import 'package:frontend_flutter/pages/login_page.dart';
 import 'package:frontend_flutter/pages/register_page.dart';
-import 'package:frontend_flutter/pages/profile_page.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend_flutter/game_state.dart';
 import 'app_provider.dart';
@@ -37,7 +36,6 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => LoginPage(),
         '/register': (context) => RegisterPage(),
-        '/profile': (context) => ProfilePage(),
         '/help': (context) => const HelpPage(),
       },
       // theme of blue colors and white font
