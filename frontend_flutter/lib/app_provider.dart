@@ -21,53 +21,72 @@ class AppProvider extends ChangeNotifier {
   List<Map<String, dynamic>> get players => _players; // Expose the player list
 
   // Função para login
-  Future<bool> login(String email, String password) async {
-    final body = jsonEncode({'email': email, 'password': password});
-    final headers = {'Content-Type': 'application/json'};
-
-    var response = await http.post(
-      Uri.parse('http://localhost:3001/login'),
-      headers: headers,
-      body: body,
-    );
-
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-      _isLoggedIn = true;
-      _userEmail = email;
-      _secretPlayer = data['secretPlayer'];
-      await loadHighScore(); // Carrega o highScore ao logar
-      await fetchPlayers(); // Fetch the player list
-      notifyListeners();
-      return true;
-    } else {
-      return false;
-    }
+  Future<String?> login(String email, String password) async {
+  if (email.isEmpty || password.isEmpty) {
+    return 'Preencha todos os campos';
   }
 
-  // Função para registro
-  Future<bool> register(String email, String password) async {
-    final body = jsonEncode({'email': email, 'password': password});
-    final headers = {'Content-Type': 'application/json'};
+  final body = jsonEncode({'email': email, 'password': password});
+  final headers = {'Content-Type': 'application/json'};
 
-    var response = await http.post(
-      Uri.parse('http://localhost:3001/signup'),
-      headers: headers,
-      body: body,
-    );
+  var response = await http.post(
+    Uri.parse('http://localhost:3001/login'),
+    headers: headers,
+    body: body,
+  );
 
-    if (response.statusCode == 201) {
-      var data = jsonDecode(response.body);
-      _isLoggedIn = true;
-      _userEmail = email;
-      _secretPlayer = data['secretPlayer'];
-      await loadHighScore(); // Carrega o highScore ao logar
-      notifyListeners();
-      return true;
-    } else {
-      return false;
-    }
+  if (response.statusCode == 200) {
+    var data = jsonDecode(response.body);
+    _isLoggedIn = true;
+    _userEmail = email;
+    _secretPlayer = data['secretPlayer'];
+    await loadHighScore();
+    await fetchPlayers();
+    notifyListeners();
+    return null; // Login bem-sucedido
+  } else if (response.statusCode == 401) {
+    return 'Senha incorreta';
+  } else if (response.statusCode == 404) {
+    return 'Usuário não encontrado';
+  } else {
+    return 'Erro ao fazer login. Tente novamente';
   }
+}
+
+  Future<String?> register(String email, String password) async {
+  if (email.isEmpty || password.isEmpty) {
+    return 'Preencha todos os campos';
+  }
+  if (password.length < 6) {
+    return 'A senha deve ter pelo menos 6 caracteres';
+  }
+  if (!RegExp(r'^[\w\-.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
+    return 'Formato de e-mail inválido';
+  }
+
+  final body = jsonEncode({'email': email, 'password': password});
+  final headers = {'Content-Type': 'application/json'};
+
+  var response = await http.post(
+    Uri.parse('http://localhost:3001/signup'),
+    headers: headers,
+    body: body,
+  );
+
+  if (response.statusCode == 201) {
+    var data = jsonDecode(response.body);
+    _isLoggedIn = true;
+    _userEmail = email;
+    _secretPlayer = data['secretPlayer'];
+    await loadHighScore();
+    notifyListeners();
+    return null; // Registro bem-sucedido
+  } else if (response.statusCode == 409) {
+    return 'Usuário já cadastrado';
+  } else {
+    return 'Erro ao registrar. Tente novamente';
+  }
+}
 
   // Função para logout
   Future<void> logout() async {

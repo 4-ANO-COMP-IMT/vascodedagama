@@ -9,42 +9,35 @@ class RegisterPage extends StatelessWidget {
 
   RegisterPage({super.key});
 
-  _handleRegister(BuildContext context) {
-    final appProvider = Provider.of<AppProvider>(context, listen: false);
+  _handleRegister(BuildContext context) async {
+  final appProvider = Provider.of<AppProvider>(context, listen: false);
 
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Preencha todos os campos')),
-      );
-      return;
-    }
+  final errorMessage = await appProvider.register(
+    _emailController.text,
+    _passwordController.text,
+  );
 
-    appProvider
-        .register(
+  if (errorMessage == null) {
+    // Se o registro for bem-sucedido, tente fazer o login automaticamente
+    final loginErrorMessage = await appProvider.login(
       _emailController.text,
       _passwordController.text,
-    )
-        .then((success) {
-      if (success) {
-        appProvider
-            .login(_emailController.text, _passwordController.text)
-            .then((loginSuccess) {
-          if (loginSuccess) {
-            Navigator.pushReplacementNamed(context, '/');
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text('Erro ao fazer login após o registro')),
-            );
-          }
-        });
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Erro ao registrar')),
-        );
-      }
-    });
+    );
+
+    if (loginErrorMessage == null) {
+      Navigator.pushReplacementNamed(context, '/');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(loginErrorMessage)),
+      );
+    }
+  } else {
+    // Exibe a mensagem de erro específica do registro
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(errorMessage)),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {

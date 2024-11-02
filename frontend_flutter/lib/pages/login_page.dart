@@ -8,29 +8,22 @@ class LoginPage extends StatelessWidget {
 
   LoginPage({super.key});
 
-  _loginHandle(BuildContext context) {
-    final appProvider = Provider.of<AppProvider>(context, listen: false);
+  _loginHandle(BuildContext context) async {
+  final appProvider = Provider.of<AppProvider>(context, listen: false);
 
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Preencha todos os campos')),
-      );
-      return;
-    }
+  final errorMessage = await appProvider.login(
+    _emailController.text,
+    _passwordController.text,
+  );
 
-    appProvider.login(
-      _emailController.text,
-      _passwordController.text,
-    ).then((success) {
-      if (success) {
-        Navigator.pushReplacementNamed(context, '/');
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Erro ao fazer login')),
-        );
-      }
-    });
+  if (errorMessage == null) {
+    Navigator.pushReplacementNamed(context, '/');
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(errorMessage)),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {
