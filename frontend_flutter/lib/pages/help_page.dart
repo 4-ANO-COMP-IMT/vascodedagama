@@ -12,7 +12,7 @@ class HelpPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.home),
           onPressed: () {
-            Navigator.pushReplacementNamed(context, '/');
+            Navigator.pop(context); // Volta para a HomePage
           },
         ),
         title: const Text('Ajuda'),
@@ -81,7 +81,7 @@ class HelpPage extends StatelessWidget {
                     const SizedBox(height: 40),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/');
+                        Navigator.pop(context); // Volta para a HomePage;
                       },
                       child: const Text('Voltar ao jogo'),
                     ),

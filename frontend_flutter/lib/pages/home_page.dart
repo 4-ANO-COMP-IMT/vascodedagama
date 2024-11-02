@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:frontend_flutter/app_provider.dart';
 import 'package:frontend_flutter/game_state.dart';
+import 'package:frontend_flutter/pages/help_page.dart';
 import 'package:frontend_flutter/widgets/player_name_widget.dart';
 import 'package:frontend_flutter/widgets/player_number_widget.dart';
 import 'package:frontend_flutter/widgets/player_string_widget.dart';
@@ -21,8 +22,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
-  final TextEditingController _guessController =
-      TextEditingController(); // Controlador para o campo de texto de palpites
+  final TextEditingController _guessController = TextEditingController(); // Controlador para o campo de texto de palpites
   Timer? _debounce; // Temporizador para debounce no campo de texto
   bool _isCorrectGuess = false; // Indica se o último palpite foi correto
   late AnimationController
@@ -128,6 +128,7 @@ class _HomePageState extends State<HomePage>
                   builder: (context) => ProfileDialog(
                         name: appProvider.userEmail ?? 'Unknown User',
                         score: gameState.score,
+                        highScore: gameState.highScore,
                         onLogout: () {
                           appProvider.logout();
                           Navigator.pushReplacementNamed(context, '/');
@@ -141,9 +142,13 @@ class _HomePageState extends State<HomePage>
         actions: [
           // Botão de ajuda
           IconButton(
+            iconSize: 40.0,
             icon: const Icon(Icons.help, color: Colors.black),
             onPressed: () {
-              Navigator.pushNamed(context, '/help');
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HelpPage()),
+              );
             },
           ),
         ],
@@ -236,20 +241,21 @@ class _HomePageState extends State<HomePage>
                                     ),
                                     const SizedBox(height: 20),
                                     // Exibe mensagem de acerto ou erro com animação
-                                    FadeTransition(
-                                      opacity: _animationController,
-                                      child: Text(
-                                        _isCorrectGuess ? "Acertou!" : "Errou!",
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          color: _isCorrectGuess
-                                              ? Colors.green
-                                              : const Color.fromARGB(
-                                                  255, 244, 48, 34),
-                                          fontWeight: FontWeight.bold,
+                                    if (Provider.of<GameState>(context).attempts >= 1) 
+                                      FadeTransition(
+                                        opacity: _animationController,
+                                        child: Text(
+                                          _isCorrectGuess ? "Acertou!" : "Errou!",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: _isCorrectGuess
+                                                ? Colors.green
+                                                : const Color.fromARGB(
+                                                    255, 244, 48, 34),
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                       ),
-                                    ),
                                     const SizedBox(height: 20),
                                     // Lista de sugestões de jogadores baseada na entrada de texto
                                     SizedBox(
@@ -482,7 +488,7 @@ class _HomePageState extends State<HomePage>
                 gameState.resetGame(); // Reseta o estado do jogo
                 _guessController.clear(); // Limpa o campo
               },
-              tooltip: 'Novo Jogador Secreto',
+              tooltip: 'Resetar o jogo',
               child: const Icon(Icons.refresh),
             )
           : null, // Não exibe o botão se não estiver logado
