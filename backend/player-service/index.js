@@ -455,7 +455,7 @@ app.post('/players', (req, res) => {
   players.push(newPlayer);
 
   // Manda o Evento pro Event Bus
-  axios.post('http://localhost:3003/events', {
+  axios.post('http://eventbus-service:3003/events', {
     type: 'Novo Jogador Criado',
     data: newPlayer
   }).catch((err) => {
@@ -480,7 +480,7 @@ app.get('/secret-player', (req, res) => {
   const secretPlayer = players[randomIndex];
 
   // Manda o evento de jogador secreto para o Event Bus 
-  axios.post('http://localhost:3003/events', {
+  axios.post('http://eventbus-service:3003/events', {
     type: 'Jogador Secreto Selecionado',
     data: secretPlayer
   }).catch((err) => {

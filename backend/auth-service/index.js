@@ -5,7 +5,7 @@ const { initializeApp } = require('firebase/app');
 const { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } = require('firebase/auth');
 const axios = require('axios');  // Importando o Axios para enviar eventos para o Event Bus
 const dotenv = require('dotenv');
-dotenv.config({path: "../.env"});
+dotenv.config({path: "./.env"});
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -31,10 +31,10 @@ app.post('/login', async (req, res) => {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     
     // Sorteia o jogador secreto
-    const { data: secretPlayer } = await axios.get('http://localhost:3002/secret-player');
+    const { data: secretPlayer } = await axios.get('http://playerservice-clusterip-service:3002/secret-player');
 
     // Manda o Evento pro Event Bus
-    axios.post('http://localhost:3003/events', {
+    axios.post('http://eventbus-service:3003/events', {
       type: 'Usuario Logado',
       data: {
         id: userCredential.user.uid,
@@ -61,10 +61,10 @@ app.post('/signup', async (req, res) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     
     // Sorteia o jogador secreto
-    const { data: secretPlayer } = await axios.get('http://localhost:3002/secret-player');
+    const { data: secretPlayer } = await axios.get('http://playerservice-clusterip-service:3002/secret-player');
 
     // Manda o Evento pro Event Bus
-    axios.post('http://localhost:3003/events', {
+    axios.post('http://eventbus-service:3003/events', {
       type: 'Usuario Criado',
       data: {
         id: userCredential.user.uid,
@@ -88,7 +88,7 @@ app.post('/logout', (req, res) => {
   signOut(auth)
     .then(() => {
       // Manda o Evento pro Event Bus
-      axios.post('http://localhost:3003/events', {
+      axios.post('http://eventbus-service:3003/events', {
         type: 'Usuario Deslogado',
         data: { message: 'Usuário deslogado com sucesso' }
       }).catch((err) => {
