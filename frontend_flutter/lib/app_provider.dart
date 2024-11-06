@@ -30,7 +30,7 @@ class AppProvider extends ChangeNotifier {
   final headers = {'Content-Type': 'application/json'};
 
   var response = await http.post(
-    Uri.parse('http://localhost:3001/login'),
+    Uri.parse('http://localhost:31245/login'), // 3001 Alterar o <NODE_PORT> se necessário
     headers: headers,
     body: body,
   );
@@ -68,7 +68,7 @@ class AppProvider extends ChangeNotifier {
   final headers = {'Content-Type': 'application/json'};
 
   var response = await http.post(
-    Uri.parse('http://localhost:3001/signup'),
+    Uri.parse('http://localhost:31245/signup'), // 3001 Alterar o <NODE_PORT> se necessário
     headers: headers,
     body: body,
   );
@@ -90,7 +90,7 @@ class AppProvider extends ChangeNotifier {
 
   // Função para logout
   Future<void> logout() async {
-    await http.post(Uri.parse('http://localhost:3001/logout'));
+    await http.post(Uri.parse('http://localhost:31245/logout'));  // 3001 Alterar o PORT
     _isLoggedIn = false;
     _userEmail = null;
     _secretPlayer = null;
@@ -123,7 +123,7 @@ class AppProvider extends ChangeNotifier {
 
   // Fetch the player list from your backend
   Future<void> fetchPlayers() async {
-    final url = Uri.parse('http://localhost:3002/players');
+    final url = Uri.parse('http://localhost:31448/players'); // 3002 Alterar o <NODE_PORT> se necessário
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -150,7 +150,7 @@ class AppProvider extends ChangeNotifier {
   }
 
   Future<void> loadNewSecretPlayer() async {
-  final url = Uri.parse('http://localhost:3002/secret-player');
+  final url = Uri.parse('http://localhost:31448/secret-player'); // 3002 Alterar o <NODE_PORT> se necessário
 
   try {
     final response = await http.get(url);

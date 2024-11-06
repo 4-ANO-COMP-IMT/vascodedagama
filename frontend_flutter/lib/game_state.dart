@@ -46,6 +46,7 @@ class GameState extends ChangeNotifier {
         // Exibe caixa de diálogo de sucesso
         showDialog(
           context: context,
+          barrierDismissible: false,
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text('Parabéns!'),
