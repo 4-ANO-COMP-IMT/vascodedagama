@@ -104,7 +104,7 @@ npm install -g concurrently
 npm run start-all
 ```
 
-### Inicie o servidor front-end:
+### Inicie o servidor front-end React:
 
 ```sh
 cd ..
@@ -114,6 +114,15 @@ npm install
 npm start
 ```
 Acesse a aplicação via navegador no endereço http://localhost:3000.
+
+### Inicie o servidor front-end Flutter:
+
+```sh
+cd ..
+cd frontend
+cd frontend_flutter
+flutter run -d chrome --web-renderer html
+```
 
 # Backend Módulos
 
