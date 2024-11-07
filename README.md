@@ -21,6 +21,9 @@ Dicas:
 - Vermelho com seta para baixo (⬇️): Significa que o atributo é maior do que o do jogador secreto.
 - Vermelho com seta para cima (⬆️): Significa que o atributo é menor do que o do jogador secreto.
 
+## Vídeo demonstrativo
+https://www.youtube.com/watch?v=cOrK03OSrUk
+
 ## Setup
 ### Estrutura de Pastasgit reflog
 
