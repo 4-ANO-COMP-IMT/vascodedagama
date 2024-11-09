@@ -12,11 +12,13 @@ app.post('/events', (req, res) => {
 
   events.push(event);
 
+  console.log("Evento recebido!")
+
   // Encaminhar o evento para o serviço apropriado
-  axios.post('http://localhost:3001/events', event).catch((err) => {
+  axios.post('http://authservice-service:3001/events', event).catch((err) => {
     console.log('Erro encaminhando o evento para o serviço apropriado', err.message);
   });
-  axios.post('http://localhost:3002/events', event).catch((err) => {
+  axios.post('http://playerservice-clusterip-service:3002/events', event).catch((err) => {
     console.log('Erro encaminhando o evento para o serviço apropriado', err.message);
   });
 

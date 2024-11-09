@@ -21,6 +21,9 @@ Dicas:
 - Vermelho com seta para baixo (⬇️): Significa que o atributo é maior do que o do jogador secreto.
 - Vermelho com seta para cima (⬆️): Significa que o atributo é menor do que o do jogador secreto.
 
+## Vídeo demonstrativo
+https://www.youtube.com/watch?v=cOrK03OSrUk
+
 ## Setup
 ### Estrutura de Pastasgit reflog
 
@@ -48,7 +51,36 @@ FIREBASE_APP_ID=
 FIREBASE_MEASUREMENT_ID=
 ```
 
-**Instale as dependências dos serviços do back-end individualmente:**
+#### Kubernetes/Docker
+
+**Caso use kubernetes, realize os deployments:**
+```sh
+cd backend
+
+cd implantacao
+
+kubectl apply -f eventbus-deployment.yaml
+kubectl apply -f authservice-deployment.yaml
+kubectl apply -f authservice-service.yaml
+kubectl apply -f playerservice-deployment.yaml
+kubectl apply -f playerservice-service.yaml
+```
+
+**Para verificar o deployment:**
+```sh
+kubectl get deployments
+kubectl get pods
+```
+
+**Para realizar requests para os microsserviços:**
+```sh
+kubectl get services
+```
+
+Pegue a porta definida pelo serviço NodePort. A url será com a porta definida pelo serviço (http://localhost:<NODE_PORT>/).
+
+#### Microsserviços localmente
+**Caso use os microsserviços localmente, instale as dependências dos serviços do back-end individualmente:**
 
 ```sh
 cd backend
@@ -75,7 +107,7 @@ npm install -g concurrently
 npm run start-all
 ```
 
-### Inicie o servidor front-end:
+### Inicie o servidor front-end React:
 
 ```sh
 cd ..
@@ -85,6 +117,15 @@ npm install
 npm start
 ```
 Acesse a aplicação via navegador no endereço http://localhost:3000.
+
+### Inicie o servidor front-end Flutter:
+
+```sh
+cd ..
+cd frontend
+cd frontend_flutter
+flutter run -d chrome --web-renderer html
+```
 
 # Backend Módulos
 

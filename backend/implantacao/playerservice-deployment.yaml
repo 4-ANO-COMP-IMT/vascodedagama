@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: playerservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: playerservice
+  template:
+    metadata:
+      labels:
+        app: playerservice
+    spec:
+      containers:
+      - name: playerservice
+        image: cesarfkb/playerservice
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: playerservice-clusterip-service
+spec:
+  selector:
+    app: playerservice
+  ports:
+  - name: playerservice
+    protocol: TCP
+    port: 3002
+    targetPort: 3002

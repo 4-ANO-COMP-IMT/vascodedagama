@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authservice
+spec:
+  selector:
+    matchLabels:
+      app: authservice
+  template:
+    metadata:
+      labels:
+        app: authservice
+    spec:
+      containers:
+      - name: authservice
+        image: cesarfkb/authservice
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: authservice-service
+spec:
+  selector:
+    app: authservice
+  type: ClusterIP
+  ports:
+  - name: authservice
+    protocol: TCP
+    port: 3001
+    targetPort: 3001
+
