@@ -1,0 +1,6 @@
+{
+    "scripts": {
+        "start-backend": "concurrently \"node backend/auth-service/index.js\" \"node backend/event-bus/index.js\" \"node backend/player-service/index.js\"",
+        "start-frontend": "npm start --prefix frontend/championsdle-frontend"
+        }
+}
